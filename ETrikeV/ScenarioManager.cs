@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace ETrikeV
+{
+	public class ScenarioManager
+	{
+		private List<Scenario> scenarioList = null;
+		private int currentScenarioNo = 0;
+
+		public ScenarioManager ()
+		{
+			this.scenarioList = new List<Scenario> ();
+			this.scenarioList.Add (new Scenario (Mode.Straight,  6100, 100,    0));
+			this.scenarioList.Add (new Scenario (Mode.Corner,    7350,   0, -200));
+			this.scenarioList.Add (new Scenario (Mode.Straight,  8700,  80,    0));
+			this.scenarioList.Add (new Scenario (Mode.Line,     10900,   0,    0));
+			this.scenarioList.Add (new Scenario (Mode.Straight, 12700,  80,    0));
+			this.scenarioList.Add (new Scenario (Mode.Line,     13700,   0,    0));
+			this.scenarioList.Add (new Scenario (Mode.Straight, 14000,  50,    0));
+		}
+
+		/// <summary>
+		/// 現在のシナリオを取得する
+		/// </summary>
+		/// <returns>The current scenario.</returns>
+		public Scenario GetCurrentScenario() {
+			return this.scenarioList [currentScenarioNo];
+		}
+
+		/// <summary>
+		/// 次のシナリオへ変更する
+		/// </summary>
+		/// <returns>新しいシナリオ</returns>
+		public Scenario UpdateScenario() {
+			this.currentScenarioNo++;
+			if (this.scenarioList.Count == this.currentScenarioNo) {
+				return null;
+			} else {
+				return this.scenarioList [this.currentScenarioNo];
+			}
+		}
+	}
+}
+
