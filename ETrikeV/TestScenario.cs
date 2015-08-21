@@ -17,8 +17,7 @@ namespace ETrikeV
 			sys.setSteerSlope (0);
 			System.Threading.Thread.Sleep (1000);
 
-
-			return false;
+			return true;
 		}
 	}
 }

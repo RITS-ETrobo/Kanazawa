@@ -46,5 +46,6 @@
     <Compile Include="StraightScenario.cs" />
     <Compile Include="CornerScenario.cs" />
     <Compile Include="TestScenario.cs" />
+    <Compile Include="LineTraceScenario.cs" />
   </ItemGroup>
 </Project>
