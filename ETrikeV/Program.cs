@@ -46,10 +46,6 @@ namespace ETrikeV
 
 		enum stepKind : int { L_CURVE, TWO_BRIDGE, BARCODE };
 
-
-		// 時間計測用
-		static private System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-
 		/// <summary>
 		/// Main
 		/// </summary>
@@ -57,93 +53,46 @@ namespace ETrikeV
 		static void Main(string[] args)
 		{
 			Scenario scenario = null;
-			ScenarioManager scenarioMng = new ScenarioManager();
-
-			//仮
-			int grey = 25;
-			int light = 0;
-			/*
-            int black = 5;
-            int white = 50;
-            int grey = 0;
-            int light = 0;
-
-            EV3TouchSensor touch = new EV3TouchSensor(SensorPort.In2);
-            EV3ColorSensor color = new EV3ColorSensor(SensorPort.In3, ColorMode.Reflection);
-            Motor steerMotor = new Motor(MotorPort.OutC);
-            Motor leftMotor = new Motor(MotorPort.OutA);
-            Motor rightMotor = new Motor(MotorPort.OutB);
-
-            #if true
+			ScenarioManager scenarioMng = new ScenarioManager(Mode.Right);
+			Ev3System robokon = Ev3System.getInstance ();
+			robokon.allResetParam();
+			bool isEndScenario = false;
+			int black = 5;
+			int white = 50;
+            
+			// キャリブレーション
+            #if false
             // 白
             InfoDialog whiteChk = new InfoDialog("white", true);
             whiteChk.Show();//Wait for enter to be pressed
-            white = color.Read();
+			white = robokon.colorRead ();
 
             // 黒
             InfoDialog blackChk = new InfoDialog("Black", true);
             blackChk.Show ();
-            black = color.Read ();
+			black = robokon.colorRead ();
 
             // 灰
-            grey = (white + black) / 2;
-            */
-
-			Ev3System robokon = new Ev3System();
-			robokon.initialize();
-
-			//パラメータの初期化
-			robokon.allResetParam();
+			robokon.TargetLight = (white + black) / 2;
 
 			// ステアリング
 			// タッチセンサーを押すまで後輪が同じパワーで動き続ける
 			// 前輪の向きを調整してください
 			InfoDialog steerChk = new InfoDialog("Steer", true);
 			steerChk.Show();
-			//while (!touch.IsPressed())
 			while (!robokon.touchIsPressed())
 			{
-				robokon.leftMotor.SetPower(-1 * DRIVING_POWER);
-				robokon.rightMotor.SetPower(-1 * DRIVING_POWER);
+				robokon.setLeftMotorPower(100);
+				robokon.setRightMotorPower(100);
 			}
-
-			InfoDialog dialogSTART = new InfoDialog("Enter to START_", true);
-			dialogSTART.Show();//Wait for enter to be pressed
-
-			//パラメータの初期化
+			#endif
+			robokon.setLeftMotorPower(0);
+			robokon.setRightMotorPower(0);
 			robokon.allResetParam();
 
-			robokon.leftMotor.SetPower(0);
-			robokon.rightMotor.SetPower(0);
-			SetSteerTacho(robokon.steerMotor, 0, 100);
-			SetSteerTacho(robokon.steerMotor, 0, 100);
-
-			//ループ処理
-			while (!robokon.touchIsPressed())
-			{
-				if (loopHandling((object)robokon) == -1)
-				{
-					break;
-				}
-				//8ミリ秒待ち
-				Thread.Sleep(8);
-			}
-
-			robokon.steerOff();
-			robokon.leftMotorOff();
-			robokon.rightMotorOff();
-
-			Lcd.Instance.Clear();
-			Lcd.Instance.Update();
-
-			robokon.rightMotor.ResetTacho();
-
 			//スタート待ち
-			//InfoDialog dialogSTART = new InfoDialog("while=" + white + " black=" + black, true);
-			//dialogSTART.Show();//Wait for enter to be pressed
-
-			//SetSteerTacho(steerMotor, 0, 100);
-			//SetSteerTacho(steerMotor, 0, 100);
+			InfoDialog dialogSTART = new InfoDialog("while=" + white + " black=" + black, true);
+			dialogSTART.Show();//Wait for enter to be pressed
 
 			// 最終的な動作開始はタッチセンサ
 			while (!robokon.touchIsPressed())
@@ -152,43 +101,22 @@ namespace ETrikeV
 			}
 			System.Threading.Thread.Sleep(500);
 
-			sw.Start();
-			scenario = scenarioMng.GetCurrentScenario();
+			// 最初のシナリオを取得する
+			scenario = scenarioMng.getCurrentScenario();
 
 			// メインループ
-			while (!robokon.touchIsPressed())
-			{
-				light = robokon.colorRead();
-
-				switch (scenario.Mode)
-				{
-				case Mode.Straight:
-					StraightTest(light, grey, robokon.leftMotor, robokon.rightMotor, (sbyte)(scenario.Speed * -1));
-					break;
-				case Mode.Corner:
-					CornerTest(light, grey, robokon.steerMotor, robokon.leftMotor, robokon.rightMotor);
-					break;
-				case Mode.Line:
-					LineTraceTest(light, grey, robokon.steerMotor, robokon.leftMotor, robokon.rightMotor);
-					break;
-				default:
-					break;
+			while (!robokon.touchIsPressed()) {
+				isEndScenario = scenario.run (robokon);
+				if (isEndScenario) {
+					scenario = scenarioMng.updateScenario ();
+					if (scenario == null) {
+						break;
+					}
+				} else {
+					Thread.Sleep (10);
 				}
-
-				// モード変更判定
-				if (scenario.isEndScenario(robokon.leftMotor, robokon.rightMotor))
-				{
-					robokon.leftMotor.Brake();
-					robokon.rightMotor.Brake();
-					robokon.steerMotor.Brake();
-					scenario = scenarioMng.UpdateScenario();
-					if (scenario == null) break;
-					SetSteerTacho(robokon.steerMotor, scenario.StartSteerPos, 100);
-				}
-
-				Thread.Sleep(10);
 			}
-			//#endif
+
 			// 後処理
 			robokon.steerMotor.Off();
 			robokon.leftMotor.Off();
@@ -271,71 +199,6 @@ namespace ETrikeV
 				right.SetPower(-1 * LINE_TRACE_DRV_PWR / 2);
 			}
 			#endif
-			return 0;
-		}
-
-		/// <summary>
-		/// コーナー用
-		/// 前輪を一定にする
-		/// </summary>
-		/// <returns>The test.</returns>
-		/// <param name="light">Light.</param>
-		/// <param name="grey">Grey.</param>
-		/// <param name="steer">Steer.</param>
-		/// <param name="left">Left.</param>
-		/// <param name="right">Right.</param>
-		/// <param name="stopTacho">Stop tacho.</param>
-		static int CornerTest(int light, int grey, Motor steer, Motor left, Motor right)
-		{
-			#if true
-			if (light > grey + LIGHT_WIDTH)
-			{
-				left.SetPower(-1 * CONER_DRV_PWR / 2);
-				right.SetPower(-1 * CONER_DRV_PWR / 4);
-			}
-			else if (light < grey - LIGHT_WIDTH)
-			{
-				left.SetPower(-1 * CONER_DRV_PWR / 5);
-				right.SetPower(-1 * CONER_DRV_PWR);
-			}
-			else
-			{
-				left.SetPower(-1 * CONER_DRV_PWR / 4);
-				right.SetPower(-1 * CONER_DRV_PWR / 4);
-			}
-			#endif
-
-			return 0;
-		}
-
-		/// <summary>
-		/// 最初の直線用
-		/// 現状だと後輪が5500回転すると止まる
-		/// 6000回転でちょうどカーブの入り口あたりになる
-		/// </summary>
-		/// <param name="light">Light.</param>
-		/// <param name="grey">Grey.</param>
-		/// <param name="left">Left.</param>
-		/// <param name="right">Right.</param>
-		static int StraightTest(int light, int grey, Motor left, Motor right, sbyte speed)
-		{
-			// 後輪を制御してライン左エッジを走行する
-			// ステアリングは一切変えない
-			if (light > grey + LIGHT_WIDTH)
-			{
-				left.SetPower(speed);
-				right.SetPower((sbyte)(speed / 2));
-			}
-			else if (light < grey - LIGHT_WIDTH)
-			{
-				left.SetPower((sbyte)(speed / 2));
-				right.SetPower(speed);
-			}
-			else
-			{
-				left.SetPower(speed);
-				right.SetPower(speed);
-			}
 			return 0;
 		}
 
@@ -567,50 +430,6 @@ namespace ETrikeV
 		}
 
 		/// <summary>
-		/// ステアリング傾き変更
-		/// </summary>
-		/// <param name="leftMotor">左モーター</param>
-		/// <param name="rightMotor">右モーター</param>
-		/// <param name="steerMotor">ステアリングモーター</param>
-		/// <param name="slope">滑らか</param>
-		static void actionSlopeChange(Motor leftMotor, Motor rightMotor, Motor steerMotor, int slope)
-		{
-			int tacho;
-			int maxSlopeRange = 5;
-			int slopeToTacho = slope * 8;
-
-			//停止
-			stopMotor(leftMotor, rightMotor, steerMotor);
-
-			tacho = steerMotor.GetTachoCount();
-
-			//前輪を真っ直ぐに治す
-			while (true)
-			{
-				tacho = steerMotor.GetTachoCount();
-				if ((tacho <= (slopeToTacho + maxSlopeRange)) && (tacho >= (slopeToTacho - maxSlopeRange)))
-				{
-					break;
-				}
-
-				if (tacho > (slopeToTacho + maxSlopeRange))
-				{
-					steerMotor.SetPower(-100);
-				}
-				else
-				{
-					steerMotor.SetPower(100);
-				}
-
-				Thread.Sleep(10);
-			}
-
-			//停止
-			stopMotor(leftMotor, rightMotor, steerMotor);
-
-		}
-
-		/// <summary>
 		/// タコメータの回転数を元に任意の距離だけ前進する
 		/// </summary>
 		/// <param name="leftMotor">左モーター</param>
@@ -670,7 +489,7 @@ namespace ETrikeV
 		/// <param name="pw">Pw.</param>
 		static void actionAdvanceToBlackLine(Ev3System robokon, sbyte pw)
 		{
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 0);
+			robokon.setSteerSlope (0);
 			robokon.leftMotor.SetPower((sbyte)(pw * -1));
 			robokon.rightMotor.SetPower((sbyte)(pw * -1));
 			while (true)
@@ -751,7 +570,7 @@ namespace ETrikeV
 			int[] tacho = new int[2];
 			int distanceToTacho = (int)(distance * 25); //距離をタコ回転数に変換した値。　２５回転で1cm
 
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, slop);
+			robokon.setSteerSlope (slop);
 
 			tacho[0] = robokon.leftMotorGetTachoCount();
 			robokon.leftMotor.SetPower(leftPw);
@@ -823,7 +642,7 @@ namespace ETrikeV
 			//ステアリングの傾きを直す
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, -30);
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 30);
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 0);
+			robokon.setSteerSlope(0);
 
 			//前進して段差を超える
 			actionAdvance(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 70, 20, true);
@@ -831,14 +650,13 @@ namespace ETrikeV
 			//ステアリングの傾きを直す
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, -30);
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 30);
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 0);
-
+			robokon.setSteerSlope(0);
 
 			//ライン上に戻す
 			if (robokon.colorRead() != (int)Color.Black)
 			{
 
-				actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, -60);
+				robokon.setSteerSlope(-60);
 				tacho[0] = robokon.rightMotorGetTachoCount();
 				robokon.setLeftMotorPower(-20);
 				robokon.setRightMotorPower(20);
@@ -849,7 +667,7 @@ namespace ETrikeV
 					if (tacho[1] < (tacho[0] - (25 * 5)))
 					{
 						edg = 1;
-						actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 60);
+						robokon.setSteerSlope(60);
 						tacho[0] = robokon.leftMotorGetTachoCount();
 						robokon.setLeftMotorPower(20);
 						robokon.setRightMotorPower(-20);
@@ -879,7 +697,7 @@ namespace ETrikeV
 			//ステアリングの傾きを直す
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, -30);
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 30);
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 0);
+			robokon.setSteerSlope(0);
 
 			tacho[0] = robokon.leftMotorGetTachoCount();
 			while (true)
@@ -897,7 +715,7 @@ namespace ETrikeV
 			//ステアリングの傾きを直す
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, -30);
 			//actionSlopeChange (robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 30);
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 0);
+			robokon.setSteerSlope(0);
 
 			actionAdvance(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 40, 10, true);
 
@@ -908,7 +726,7 @@ namespace ETrikeV
 			actionAdvanceToBlackLine(robokon, 20);
 
 			//actionTurn (robokon, -20, -40, 45, 30);
-			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 45);
+			robokon.setSteerSlope(45);
 
 			tacho[0] = robokon.leftMotorGetTachoCount();
 			robokon.leftMotor.SetPower(-40);

@@ -15,47 +15,39 @@ namespace ETrikeV
     /// </summary>
     public class Ev3System
     {
-        //ev3System()
-        //{
-        //    //とりあえず、何もしない
-        //    //C#がコンストラクタでnewしてもいいなら、ここで初期化処理までしてしまう。
-        //    // initialize();
-        //}
+		private static Ev3System instance = new Ev3System();
+		public int TargetLight { get; set; }
+
+		private Ev3System() {
+			initialize ();
+		}
 
         /// <summary>
         /// システムの初期化
         /// </summary>
         /// <returns>初期化の成否</returns>
-        public bool initialize()
-        {
-            bool retval = false;
+        private void initialize()
+		{
+            color = new EV3ColorSensor(SensorPort.In3, ColorMode.Reflection);
+            touch = new EV3TouchSensor(SensorPort.In2);
+            sonic = new EV3UltrasonicSensor(SensorPort.In1);
+            gyro = new EV3GyroSensor(SensorPort.In4);
 
-            try
-            {
-                color = new EV3ColorSensor(SensorPort.In3, ColorMode.Reflection);
-                touch = new EV3TouchSensor(SensorPort.In2);
-                sonic = new EV3UltrasonicSensor(SensorPort.In1);
-                gyro = new EV3GyroSensor(SensorPort.In4);
+            steerMotor = new Motor(MotorPort.OutC);
+            leftMotor = new Motor(MotorPort.OutA);
+            rightMotor = new Motor(MotorPort.OutB);
+            gearRatio = 25; // 一番低いギア比はこの値
 
-                steerMotor = new Motor(MotorPort.OutC);
-                leftMotor = new Motor(MotorPort.OutA);
-                rightMotor = new Motor(MotorPort.OutB);
-                gearRatio = 25; // 一番低いギア比はこの値
-
-                // 止めておく
-                steerMotor.Off();
-                leftMotor.Off();
-                rightMotor.Off();
-
-                retval = true;
-            }
-            catch
-            {
-                retval = false;
-            }
-
-            return retval;
+            // 止めておく
+            steerMotor.Off();
+            leftMotor.Off();
+            rightMotor.Off();
         }
+
+		public static Ev3System getInstance()
+		{
+			return instance;
+		}
 
         /// <summary>
         /// タコメータ、ジャイロなど全てのリセット
@@ -101,9 +93,9 @@ namespace ETrikeV
         /// ステアリングモーター:power
         /// </summary>
         /// <param name="power"></param>
-        public void setSteerPower(sbyte power)
+		public void setSteerPower(int power)
         {
-            steerMotor.SetPower(power);
+			steerMotor.SetPower((sbyte)power);
         }
         /// <summary>
         /// ステアリングモーター:TachoCount
@@ -136,7 +128,7 @@ namespace ETrikeV
         /// 左モーター:power
         /// </summary>
         /// <param name="power">モーターパワー:前進は正数</param>
-        public void setLeftMotorPower(sbyte power)
+        public void setLeftMotorPower(int power)
         {
             leftMotor.SetPower((sbyte)(power * -1));
         }
@@ -146,7 +138,7 @@ namespace ETrikeV
         /// <returns></returns>
         public int leftMotorGetTachoCount()
         {
-            return leftMotor.GetTachoCount();
+            return leftMotor.GetTachoCount() * -1;
         }
 
         /// <summary>
@@ -155,7 +147,7 @@ namespace ETrikeV
         /// <returns></returns>
         public int leftMotorGetMoveCm()
         {
-            return (leftMotor.GetTachoCount() / gearRatio);
+			return (leftMotorGetTachoCount() / gearRatio);
         }
 
         /// <summary>
@@ -181,7 +173,7 @@ namespace ETrikeV
         /// 右モーター:power
         /// </summary>
         /// <param name="power">モーターパワー:前進は正数</param>
-        public void setRightMotorPower(sbyte power)
+		public void setRightMotorPower(int power)
         {
             rightMotor.SetPower((sbyte)(power * -1));
         }
@@ -191,7 +183,7 @@ namespace ETrikeV
         /// <returns></returns>
         public int rightMotorGetTachoCount()
         {
-            return rightMotor.GetTachoCount();
+            return rightMotor.GetTachoCount() * -1;
         }
         /// <summary>
         /// 右モーター:移動距離(cm)
@@ -199,7 +191,7 @@ namespace ETrikeV
         /// <returns></returns>
         public int rightMotorGetMoveCm()
         {
-            return (rightMotor.GetTachoCount() / gearRatio);
+			return (rightMotorGetTachoCount() / gearRatio);
         }
         /// <summary>
         /// 右モーター:Brake
@@ -237,6 +229,59 @@ namespace ETrikeV
         {
             return touch.IsPressed();
         }
+
+		/// <summary>
+		/// 指定した角度に前輪を向ける
+		/// </summary>
+		/// <param name="slope">Slope.</param>
+		public void setSteerSlope(int slope)
+		{
+			int tacho;
+			int maxSlopeRange = 5;
+			int slopeToTacho = slope * 8;
+
+			//停止
+			leftMotor.Brake();
+			rightMotor.Brake ();
+			steerMotor.Brake ();
+
+			tacho = steerMotor.GetTachoCount();
+
+			//前輪を真っ直ぐに治す
+			while (true)
+			{
+				tacho = steerMotor.GetTachoCount();
+				if ((tacho <= (slopeToTacho + maxSlopeRange)) && (tacho >= (slopeToTacho - maxSlopeRange)))
+				{
+					steerMotor.Brake ();
+					break;
+				}
+
+				if (tacho > (slopeToTacho + maxSlopeRange))
+				{
+					steerMotor.SetPower(-100);
+				}
+				else
+				{
+					steerMotor.SetPower(100);
+				}
+			}
+
+			// 微調整
+			while (true) {
+				tacho = steerMotor.GetTachoCount();
+				if ((tacho <= (slopeToTacho + maxSlopeRange)) && (tacho >= (slopeToTacho - maxSlopeRange))) {
+					steerMotor.Brake ();
+					break;
+				}
+
+				if (tacho > (slopeToTacho + maxSlopeRange)) {
+					steerMotor.SetPower(-50);
+				} else {
+					steerMotor.SetPower(50);
+				}
+			}
+		}
 
         // システムのハードウエアのもの
         public EV3ColorSensor color;

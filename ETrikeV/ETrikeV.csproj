@@ -43,5 +43,8 @@
     <Compile Include="Scenario.cs" />
     <Compile Include="ScenarioManager.cs" />
     <Compile Include="Ev3System.cs" />
+    <Compile Include="StraightScenario.cs" />
+    <Compile Include="CornerScenario.cs" />
+    <Compile Include="TestScenario.cs" />
   </ItemGroup>
 </Project>
