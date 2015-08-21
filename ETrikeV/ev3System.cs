@@ -13,7 +13,7 @@ namespace ETrikeV
     /// コースの攻略に関係ない部分
     /// EV3本体については、このクラスが責務を持つ
     /// </summary>
-    class ev3System
+    public class Ev3System
     {
         //ev3System()
         //{

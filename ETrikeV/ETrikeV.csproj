@@ -42,6 +42,6 @@
     <Compile Include="Mode.cs" />
     <Compile Include="Scenario.cs" />
     <Compile Include="ScenarioManager.cs" />
-    <Compile Include="ev3System.cs" />
+    <Compile Include="Ev3System.cs" />
   </ItemGroup>
 </Project>

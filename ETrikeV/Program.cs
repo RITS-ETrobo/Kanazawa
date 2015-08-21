@@ -89,7 +89,7 @@ namespace ETrikeV
             grey = (white + black) / 2;
             */
 
-			ev3System robokon = new ev3System();
+			Ev3System robokon = new Ev3System();
 			robokon.initialize();
 
 			//パラメータの初期化
@@ -345,7 +345,7 @@ namespace ETrikeV
 		/// <param name="system">ev3System</param>
 		private static int loopHandling(object system)
 		{
-			ev3System robokon = (ev3System)system;
+			Ev3System robokon = (Ev3System)system;
 			Monitor.Enter(robokon);
 
 			//TBD(値は固定)
@@ -393,7 +393,7 @@ namespace ETrikeV
 		/// <param name="count"></param>
 		/// <param name="outPower"></param>
 		/// <param name="inPower"></param>
-		private static void basicLineTrace(ev3System robokon, int grey, sbyte edg, ref int count, ref sbyte outPower, ref sbyte inPower)
+		private static void basicLineTrace(Ev3System robokon, int grey, sbyte edg, ref int count, ref sbyte outPower, ref sbyte inPower)
 		{
 			int light = robokon.colorRead();
 			double pidVal = pid(light, grey);
@@ -668,7 +668,7 @@ namespace ETrikeV
 		/// </summary>
 		/// <param name="robokon">Robokon.</param>
 		/// <param name="pw">Pw.</param>
-		static void actionAdvanceToBlackLine(ev3System robokon, sbyte pw)
+		static void actionAdvanceToBlackLine(Ev3System robokon, sbyte pw)
 		{
 			actionSlopeChange(robokon.leftMotor, robokon.rightMotor, robokon.steerMotor, 0);
 			robokon.leftMotor.SetPower((sbyte)(pw * -1));
@@ -746,7 +746,7 @@ namespace ETrikeV
 		/// <param name="leftPw">Left pw.</param>
 		/// <param name="slop">Slop.</param>
 		/// <param name="distance">Distance.</param>
-		static void actionTurn(ev3System robokon, sbyte rightPw, sbyte leftPw, int slop, uint distance)
+		static void actionTurn(Ev3System robokon, sbyte rightPw, sbyte leftPw, int slop, uint distance)
 		{
 			int[] tacho = new int[2];
 			int distanceToTacho = (int)(distance * 25); //距離をタコ回転数に変換した値。　２５回転で1cm
@@ -805,7 +805,7 @@ namespace ETrikeV
 		}
 
 		// colorの値使ってない気がする
-		static void actionLPoint(ev3System robokon)
+		static void actionLPoint(Ev3System robokon)
 		{
 			int grey = 25;
 			sbyte edg = 2;
