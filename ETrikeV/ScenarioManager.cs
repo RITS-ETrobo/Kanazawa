@@ -18,6 +18,7 @@ namespace ETrikeV
 				// Rコース
 				//scenarioList.Add(new TestScenario());
 
+				#if true
 				scenarioList.Add (new StraightScenario(   6100, 100, Mode.Left));
 				scenarioList.Add (new CornerScenario (    7350,  70, -30, Mode.Left));
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
@@ -25,6 +26,7 @@ namespace ETrikeV
 				scenarioList.Add (new StraightScenario  (12700,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (13700,  70, Mode.Left));
 				scenarioList.Add (new StraightScenario  (14000,  80, Mode.Left));
+				#endif
 				scenarioList.Add (new FigureLScenario  ());
 				scenarioList.Add (new ShinkansenScenario ());
 

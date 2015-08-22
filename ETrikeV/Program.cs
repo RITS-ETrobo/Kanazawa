@@ -60,10 +60,10 @@ namespace ETrikeV
 			bool isEndScenario = false;
 			int black = 5;
 			int white = 50;
-			Speaker sp = new Speaker (100);
+			//Speaker sp = new Speaker (100);
             
 			// キャリブレーション
-            #if false
+            #if true
             // 白
             InfoDialog whiteChk = new InfoDialog("white", true);
             whiteChk.Show();//Wait for enter to be pressed
@@ -114,7 +114,7 @@ namespace ETrikeV
 					if (scenario == null) {
 						break;
 					}
-					sp.Buzz (100);
+					//sp.Buzz (100);
 				} else {
 					Thread.Sleep (10);
 				}
