@@ -13,6 +13,9 @@ namespace ETrikeV
 			scenarioList = new List<Scenario> ();
 			if (mode == Mode.Left) {
 				// Lコース
+				scenarioList.Add (new StraightScenario (  7000, 100, Mode.Right));
+				scenarioList.Add (new CornerScenario (    8200,  70, 40, Mode.Right));
+				scenarioList.Add (new StraightScenario (  8700,  80, Mode.Right));
 
 			} else {
 				// Rコース
