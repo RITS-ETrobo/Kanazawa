@@ -60,7 +60,6 @@ namespace ETrikeV
 			bool isEndScenario = false;
 			int black = 5;
 			int white = 50;
-			Speaker sp = new Speaker (100);
             
 			// キャリブレーション
             #if true
