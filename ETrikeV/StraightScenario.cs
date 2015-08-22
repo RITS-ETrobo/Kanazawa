@@ -23,32 +23,7 @@ namespace ETrikeV
 				return true;
 			}
 
-			// 後輪を制御してライン左エッジを走行する
-			// ステアリングは一切変えない
-			int light = sys.colorRead ();
-			if (edge == Mode.Left) {
-				if (light > sys.TargetLight + LIGHT_WIDTH) {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed / 2);
-				} else if (light < sys.TargetLight - LIGHT_WIDTH) {
-					sys.setLeftMotorPower (speed / 2);
-					sys.setRightMotorPower (speed);
-				} else {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed);
-				}
-			} else {
-				if (light > sys.TargetLight + LIGHT_WIDTH) {
-					sys.setLeftMotorPower (speed / 2);
-					sys.setRightMotorPower (speed);
-				} else if (light < sys.TargetLight - LIGHT_WIDTH) {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed / 2);
-				} else {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed);
-				}
-			}
+			straightTrace (sys, speed, edge, LIGHT_WIDTH);
 
 			return false;
 		}
