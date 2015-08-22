@@ -47,5 +47,7 @@
     <Compile Include="CornerScenario.cs" />
     <Compile Include="TestScenario.cs" />
     <Compile Include="LineTraceScenario.cs" />
+    <Compile Include="FigureLScenario.cs" />
+    <Compile Include="ShinkansenScenario.cs" />
   </ItemGroup>
 </Project>
