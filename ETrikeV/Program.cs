@@ -1,10 +1,11 @@
 using System;
-using MonoBrickFirmware;
-using MonoBrickFirmware.Display.Dialogs;
-using MonoBrickFirmware.Display;
-using MonoBrickFirmware.Movement;
 using System.Threading;
+using MonoBrickFirmware;
+using MonoBrickFirmware.Display;
+using MonoBrickFirmware.Display.Dialogs;
+using MonoBrickFirmware.Movement;
 using MonoBrickFirmware.Sensors;
+using MonoBrickFirmware.Sound;
 
 namespace ETrikeV
 {
@@ -59,6 +60,7 @@ namespace ETrikeV
 			bool isEndScenario = false;
 			int black = 5;
 			int white = 50;
+			Speaker sp = new Speaker (100);
             
 			// キャリブレーション
             #if false
@@ -112,6 +114,7 @@ namespace ETrikeV
 					if (scenario == null) {
 						break;
 					}
+					sp.Buzz (100);
 				} else {
 					Thread.Sleep (10);
 				}

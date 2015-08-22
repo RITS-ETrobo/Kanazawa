@@ -22,6 +22,9 @@ namespace ETrikeV
 				scenarioList.Add (new CornerScenario (    7350,  70, -30, Mode.Left));
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (10900,  70, Mode.Left));
+				scenarioList.Add (new StraightScenario  (12700,  80, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (13700,  70, Mode.Left));
+				scenarioList.Add (new StraightScenario  (14000,  80, Mode.Left));
 
 //				this.scenarioList.Add (new Scenario (Mode.Straight,  6100, 100,    0));
 //				this.scenarioList.Add (new Scenario (Mode.Corner,    7350,   0, -200));
