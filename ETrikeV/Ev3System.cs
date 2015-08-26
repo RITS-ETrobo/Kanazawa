@@ -221,6 +221,14 @@ namespace ETrikeV
             return gyro.Read();
         }
 
+		/// <summary>
+		/// 超音波センサー読み取り
+		/// </summary>
+		public int getsonic()
+		{
+			return sonic.Read ();
+		}
+
         /// <summary>
         /// タッチセンサ
         /// </summary>
