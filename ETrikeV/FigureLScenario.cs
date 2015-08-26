@@ -13,11 +13,11 @@ namespace ETrikeV
 		private const int MAX_STEERING_ANGLE = 180;
 		private const int STEER_POWER = 100;
 
-		static int[] leftCount = new int[2];
-		static int[] rightCount = new int[2];
-		static uint motorStopCount = 0;
+		private int[] leftCount = new int[2];
+		private int[] rightCount = new int[2];
+		private uint motorStopCount = 0;
 			
-		static bool isStep(Ev3System sys)
+		private bool isStep(Ev3System sys)
 		{
 
 			leftCount [0] = sys.leftMotorGetTachoCount ();
@@ -42,14 +42,14 @@ namespace ETrikeV
 			return false;
 		}
 
-		static void stopMotor(Ev3System sys)
+		private void stopMotor(Ev3System sys)
 		{
 			sys.leftMotorBrake ();
 			sys.rightMotorBrake ();
 			sys.steerBrake ();
 		}
 
-		static void actionStraight(Ev3System sys, int distance, int pw)
+		private void actionStraight(Ev3System sys, int distance, int pw)
 		{
 			int nowDistance;
 			int targetDistance;
@@ -87,7 +87,7 @@ namespace ETrikeV
 			stopMotor (sys);
 		}
 
-		static void actionAdvanceToBlackLine(Ev3System sys, sbyte pw)
+		private void actionAdvanceToBlackLine(Ev3System sys, sbyte pw)
 		{
 			stopMotor (sys);
 
@@ -108,7 +108,7 @@ namespace ETrikeV
 
 		}
 
-		void serchLine(Ev3System sys)
+		private void serchLine(Ev3System sys)
 		{
 			int[] distance = new int[2];
 			int serchLeftVal = 3;
@@ -185,7 +185,7 @@ namespace ETrikeV
 
 		}
 
-		static void actionTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
+		private void actionTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
 		{
 			int[] tacho = new int[2];
 			int distanceToTacho = (int)(distance * 25); //距離をタコ回転数に変換した値。　２５回転で1cm
