@@ -87,20 +87,22 @@ namespace ETrikeV
 			stopMotor (sys);
 		}
 
-		private void actionAdvanceToBlackLine(Ev3System sys, sbyte pw)
+		private void actionAdvanceToBlackLine(Ev3System sys, int pw)
 		{
 			stopMotor (sys);
 
 			sys.setSteerSlope (0);
-			sys.leftMotor.SetPower((sbyte)(pw * -1));
-			sys.rightMotor.SetPower((sbyte)(pw * -1));
+			sys.setLeftMotorPower(pw);
+			sys.setRightMotorPower(pw);
+
+			//センサーモードが反射光モードであることが前提のため、チェック処理を入れてもよいかも
 			while (true)
 			{
 				if (sys.color.Read() < 25)
 				{
 					break;
 				}
-				//8ミリ秒待ち
+
 				Thread.Sleep(1);
 			}
 
@@ -108,12 +110,12 @@ namespace ETrikeV
 
 		}
 
-		private void serchLine(Ev3System sys)
+		private void serchLine(Ev3System sys, int range)
 		{
 			int[] distance = new int[2];
-			int serchLeftVal = 3;
-			int serchrightVal = 6;
-			int pw = 20;
+			int serchLeftVal = range;
+			int serchrightVal = (range * 2);
+			int pw = 30;
 
 			stopMotor (sys);
 
@@ -185,28 +187,27 @@ namespace ETrikeV
 
 		}
 
-		private void actionTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
+		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
 		{
-			int[] tacho = new int[2];
-			int distanceToTacho = (int)(distance * 25); //距離をタコ回転数に変換した値。　２５回転で1cm
+			int[] tmpDistance = new int[2];
 
 			stopMotor (sys);
 
 			sys.setSteerSlope (slop);
 
-			tacho[0] = sys.leftMotorGetTachoCount();
-			sys.leftMotor.SetPower(leftPw);
-			sys.rightMotor.SetPower(rightPw);
+			tmpDistance[0] = sys.leftMotorGetMoveCm();
+			sys.setRightMotorPower(rightPw);
+			sys.setLeftMotorPower(leftPw);
 
 			while (true)
 			{
-				tacho[1] = sys.leftMotorGetTachoCount();
-				if (tacho[1] < (tacho[0] - distanceToTacho))
+				tmpDistance[1] = sys.leftMotorGetMoveCm();
+				if (tmpDistance[1] > (tmpDistance[0] + distance))
 				{
 					break;
 				}
 				//8ミリ秒待ち
-				Thread.Sleep(1);
+				Thread.Sleep(8);
 			}
 
 			stopMotor (sys);
@@ -228,13 +229,13 @@ namespace ETrikeV
 			sys.setSteerSlope (0);
 
 			//段差を超えるための助走分だけ後退する
-			actionStraight(sys, -4, 40);
+			actionStraight(sys, -5, 40);
 
 			//段差を超えるために高いスピードで前進する
-			actionStraight(sys, 21, 70);
+			actionStraight(sys, 22, 70);
 
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys);
+			serchLine (sys, 5);
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
@@ -243,22 +244,37 @@ namespace ETrikeV
 			int nowDistance = (sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2;
 			while (true) {
 				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 15)) { // 7
+				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 16)) { // 7
 					break;
 				}
 				Thread.Sleep (5);
 			}
 				
 			//右に旋回
-			//actionTurn(sys, 0, -40, 60, 5);
+			actionRightTurn(sys, -60, 60, 45, 7);
 
-			//前進（ラインを見つけるまで。距離でもよいかも）
-			//actionAdvanceToBlackLine (sys, 30);
+			//ステアリングの傾きを正面に修正する
+			sys.setSteerSlope (0);
 
-			//弧を描くように前進（規定距離だけ）
+			//板から降りる
+			//斜め方向に進むので、完了後はライン探索が必須
+			actionStraight(sys, 16, 100); //15
 
+			//板から下りてラインを探す
+			serchLine (sys, 15);
 
-			//ラインを探索して、終了
+			//ステアリングの傾きを正面に修正する
+			sys.setSteerSlope (0);
+
+			//ライン復帰のためのライントレース
+			nowDistance = (sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2;
+			while (true) {
+				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 8)) { // 7
+					break;
+				}
+				Thread.Sleep (5);
+			}
 
 			stopMotor (sys);
 

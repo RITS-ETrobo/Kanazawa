@@ -21,7 +21,7 @@ namespace ETrikeV
 				// Rコース
 				//scenarioList.Add(new TestScenario());
 
-				#if true
+				#if false
 				scenarioList.Add (new StraightScenario(   6100, 100, Mode.Left));
 				scenarioList.Add (new CornerScenario (    7350,  70, -30, Mode.Left));
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
