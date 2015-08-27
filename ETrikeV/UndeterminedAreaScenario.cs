@@ -20,7 +20,7 @@ namespace ETrikeV
 		{
 			//いやだけど、ここでバーコードの情報をもらわないとどうにもらなない
 			BarcodeScenario barcode = new BarcodeScenario();
-			BarcodeScenario.run ();
+			barcode.run (sys);
 			int barcodeBit = barcode.getBarcodeBit ();
 
 			//ここから、仕様未確定エリアの動作
