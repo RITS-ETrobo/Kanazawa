@@ -10,11 +10,12 @@ namespace ETrikeV
 
 		public override bool run(Ev3System sys)
 		{
-			sys.setSteerSlope (-45);
-			System.Threading.Thread.Sleep (1000);
-			sys.setSteerSlope (45);
-			System.Threading.Thread.Sleep (1000);
-			sys.setSteerSlope (0);
+			int startPos = sys.getAverageMoveCM ();
+			sys.setBackMotorsSpeed (-100);
+			while (startPos - sys.getAverageMoveCM () < 10) {
+				
+			}
+			sys.setBackMotorsSpeed (100);
 			System.Threading.Thread.Sleep (1000);
 
 			return true;

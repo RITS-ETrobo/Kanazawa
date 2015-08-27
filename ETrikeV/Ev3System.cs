@@ -36,6 +36,7 @@ namespace ETrikeV
             steerMotor = new Motor(MotorPort.OutC);
             leftMotor = new Motor(MotorPort.OutA);
             rightMotor = new Motor(MotorPort.OutB);
+			backMotors = new MotorSync (MotorPort.OutA, MotorPort.OutB);
             gearRatio = 25; // 一番低いギア比はこの値
 
             // 止めておく
@@ -212,6 +213,29 @@ namespace ETrikeV
             return;
         }
 
+
+		public void setBackMotorsSpeed(int speed)
+		{
+			backMotors.SetPower ((sbyte)(-1 * speed));
+		}
+
+		/// <summary>
+		/// 後輪を同時回転させる
+		/// </summary>
+		/// <param name="speed">Speed.</param>
+		public void setBackMotorsSpeed(int speed, int turn)
+		{
+			backMotors.SetSpeed ((sbyte)(speed * -1), (short)turn);
+		}
+
+		/// <summary>
+		/// 後輪を停止させる
+		/// </summary>
+		public void backMotorsBrake()
+		{
+			backMotors.Brake ();
+		}
+
         /// <summary>
         /// ジャイロの読み取り
         /// </summary>
@@ -332,6 +356,7 @@ namespace ETrikeV
         public Motor steerMotor;
         public Motor leftMotor;
         public Motor rightMotor;
+		private MotorSync backMotors;
         protected int gearRatio;
     }
 
