@@ -49,5 +49,7 @@
     <Compile Include="LineTraceScenario.cs" />
     <Compile Include="FigureLScenario.cs" />
     <Compile Include="ShinkansenScenario.cs" />
+    <Compile Include="UndeterminedAreaScenario.cs" />
+    <Compile Include="BarcodeScenario.cs" />
   </ItemGroup>
 </Project>
