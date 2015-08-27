@@ -18,7 +18,14 @@ namespace ETrikeV
 		/// <param name="sys">Sys.</param>
 		public override bool run(Ev3System sys)
 		{
-			
+			//いやだけど、ここでバーコードの情報をもらわないとどうにもらなない
+			BarcodeScenario barcode = new BarcodeScenario();
+			BarcodeScenario.run ();
+			int barcodeBit = barcode.getBarcodeBit ();
+
+			//ここから、仕様未確定エリアの動作
+
+
 			return true;
 		}
 	}
