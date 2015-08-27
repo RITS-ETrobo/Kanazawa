@@ -4,6 +4,19 @@ using MonoBrickFirmware.Sensors;
 
 namespace ETrikeV
 {
+	/*
+    バーコードはこのような仕様
+    出口側に線の切れ目がある
+
+     進行方向→
+    ┌───────────┐
+    │     ┌─────┐   │
+    ├──-┤ | | | | |│  -┤
+    │     └─────┘   │
+    └───────────┘
+
+    */
+
 	public class BarcodeScenario : Scenario
 	{
 		/// <summary>
@@ -56,8 +69,8 @@ namespace ETrikeV
 			sys.color.Mode = ColorMode.Color;
 			Thread.Sleep(5);
 
-			//茶色を検知するまで
-			while (sys.colorRead() != (int)Color.Brown)
+			//白色を検知するまで
+			while (sys.colorRead() != (int)Color.White)
 			{
 				Thread.Sleep(5);
 
@@ -87,19 +100,21 @@ namespace ETrikeV
 			//3cm単位でバーコード読み取り(3cm×10回)
 			for (int loopCounter = 0; loopCounter <= 10; loopCounter++)
 			{
-				//10cm?
-				actionStraight(sys, 10, 40);
-
+				int color = sys.colorRead();
 				//白判定
-				if (sys.colorRead() == (int)Color.White)
+				if (color == (int)Color.White)
 				{
 					//白だったら1対象箇所にビットを立てる
 					BarcodeBit += (int)(1 << loopCounter);
 				}
-				else
+				else if(color == (int)Color.Brown)
 				{
-					//何もしない
+					//途中で茶色を見つけたらNG リカバリ処理は考えていない
+					break;
 				}
+
+				//10cm?
+				actionStraight(sys, 10, 40);
 			}
 
 			sys.color.Mode = ColorMode.Reflection;
@@ -112,6 +127,7 @@ namespace ETrikeV
 		/// <param name="sys">Sys.</param>
 		public override bool run(Ev3System sys)
 		{
+
 			//段差検知
 			differenceCheck(sys);
 
@@ -130,7 +146,7 @@ namespace ETrikeV
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope(0);
 
-			//茶色を検知する
+			//白色を検知する
 			findStartPosition(sys);
 
 			//ステアリングの傾きを正面に修正する
