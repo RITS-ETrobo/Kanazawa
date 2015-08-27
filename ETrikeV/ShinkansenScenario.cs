@@ -11,20 +11,12 @@ namespace ETrikeV
 		private const int STEER_POWER = 100;
 
 		//フィギュアLシナリオに同一の関数あり、後でどうにかする
-		private void stopMotor(Ev3System sys)
-		{
-			sys.leftMotorBrake ();
-			sys.rightMotorBrake ();
-			sys.steerBrake ();
-		}
-
-		//フィギュアLシナリオに同一の関数あり、後でどうにかする
 		private void actionStraight(Ev3System sys, int distance, int pw)
 		{
 			int nowDistance;
 			int targetDistance;
 
-			stopMotor (sys);
+			sys.stopMotors ();
 
 			nowDistance = ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2);
 			targetDistance = nowDistance + distance;
@@ -54,7 +46,7 @@ namespace ETrikeV
 				}
 			}
 
-			stopMotor (sys);
+			sys.stopMotors ();
 		}
 
 		//フィギュアLシナリオに同一の関数あり、後でどうにかする
@@ -65,7 +57,7 @@ namespace ETrikeV
 			int serchrightVal = (range * 2);
 			int pw = 30;
 
-			stopMotor (sys);
+			sys.stopMotors ();
 
 			sys.color.Mode = ColorMode.Color;
 			Thread.Sleep(10);
@@ -87,7 +79,7 @@ namespace ETrikeV
 			{
 				if (sys.colorRead () == (int)Color.Black) {
 					//後処理　分散しているのでまとめたい
-					stopMotor (sys);
+					sys.stopMotors ();
 					sys.color.Mode = ColorMode.Reflection;
 					Thread.Sleep(10);
 					return;
@@ -101,7 +93,7 @@ namespace ETrikeV
 				Thread.Sleep(1);
 			}
 
-			stopMotor (sys);
+			sys.stopMotors ();
 
 			sys.setSteerSlope(-60);
 			distance [0] = sys.rightMotorGetMoveCm ();
@@ -113,7 +105,7 @@ namespace ETrikeV
 			{
 				if (sys.colorRead () == (int)Color.Black) {
 					//後処理　分散しているのでまとめたい
-					stopMotor (sys);
+					sys.stopMotors ();
 					sys.color.Mode = ColorMode.Reflection;
 					Thread.Sleep(10);
 					return;
@@ -128,7 +120,7 @@ namespace ETrikeV
 			}
 
 			//後処理　分散しているのでまとめたい
-			stopMotor (sys);
+			sys.stopMotors ();
 			sys.color.Mode = ColorMode.Reflection;
 			Thread.Sleep(10);
 			return;

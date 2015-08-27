@@ -11,13 +11,7 @@ namespace ETrikeV
 {
 	class Program
 	{
-		//konさんの定義値
 		const int MAX_STEERING_ANGLE = 180;
-		const int DRIVING_POWER = 100;
-		const int CONER_DRV_PWR = 70;
-		const int LINE_TRACE_DRV_PWR = 70;
-		const int STEER_POWER = 100;
-		const int LIGHT_WIDTH = 10;
 
 		//iidaさんの定義値
 		//モータ系

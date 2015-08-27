@@ -22,7 +22,7 @@ namespace ETrikeV
 		public override bool run(Ev3System sys)
 		{
 			// 終了確認
-			if ((sys.leftMotorGetTachoCount () + sys.rightMotorGetTachoCount ()) / 2 > endTachoCount) {
+			if (sys.getAverageTachoCount() > endTachoCount) {
 				sys.setSteerSlope (0);
 				return true;
 			}

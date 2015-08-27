@@ -239,6 +239,34 @@ namespace ETrikeV
         }
 
 		/// <summary>
+		/// 全モーターを停止する
+		/// </summary>
+		public void stopMotors()
+		{
+			leftMotor.Brake ();
+			rightMotor.Brake ();
+			steerMotor.Brake ();
+		}
+
+		/// <summary>
+		/// 後輪の平均の回転数を取得する
+		/// </summary>
+		/// <returns>The average tacho count.</returns>
+		public int getAverageTachoCount()
+		{
+			return (leftMotorGetTachoCount() + rightMotorGetTachoCount()) / 2;
+		}
+
+		/// <summary>
+		/// 後輪の平均の移動距離(cm)を取得する
+		/// </summary>
+		/// <returns>The average move C.</returns>
+		public int getAverageMoveCM()
+		{
+			return (leftMotorGetMoveCm () + rightMotorGetMoveCm ()) / 2;
+		}
+
+		/// <summary>
 		/// 指定した角度に前輪を向ける
 		/// </summary>
 		/// <param name="slope">Slope.</param>
