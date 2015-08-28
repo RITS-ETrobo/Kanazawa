@@ -90,32 +90,27 @@ namespace ETrikeV
 		/// <param name="margin">Margin.</param>
 		protected void straightTrace(Ev3System sys, int speed, Mode edge, int margin)
 		{
-			// 後輪を制御してライン左エッジを走行する
+			// 後輪を制御してラインを走行する
 			// ステアリングは一切変えない
+			int leftMotorPower = speed;
+			int rightMotorPower = speed;
 			int light = sys.colorRead ();
 			if (edge == Mode.Left) {
 				if (light > sys.TargetLight + margin) {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed / 2);
+					rightMotorPower /= 2;
 				} else if (light < sys.TargetLight - margin) {
-					sys.setLeftMotorPower (speed / 2);
-					sys.setRightMotorPower (speed);
-				} else {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed);
+					leftMotorPower /= 2;
 				}
 			} else {
 				if (light > sys.TargetLight + margin) {
-					sys.setLeftMotorPower (speed / 2);
-					sys.setRightMotorPower (speed);
+					leftMotorPower /= 2;
 				} else if (light < sys.TargetLight - margin) {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed / 2);
-				} else {
-					sys.setLeftMotorPower (speed);
-					sys.setRightMotorPower (speed);
+					rightMotorPower /= 2;
 				}
 			}
+
+			sys.setLeftMotorPower (leftMotorPower);
+			sys.setRightMotorPower (rightMotorPower);
 		}
 
 		/// <summary>
