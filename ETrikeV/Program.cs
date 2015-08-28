@@ -25,7 +25,6 @@ namespace ETrikeV
 			bool isEndScenario = false;
 			int black = 5;
 			int white = 50;
-			//Speaker sp = new Speaker (100);
             
 			// キャリブレーション
             #if true
@@ -58,7 +57,7 @@ namespace ETrikeV
 			robokon.allResetParam();
 
 			//スタート待ち
-			InfoDialog dialogSTART = new InfoDialog("while=" + white + " black=" + black, true);
+			InfoDialog dialogSTART = new InfoDialog("white=" + white + " black=" + black, true);
 			dialogSTART.Show();//Wait for enter to be pressed
 
 			// 最終的な動作開始はタッチセンサ
@@ -79,7 +78,6 @@ namespace ETrikeV
 					if (scenario == null) {
 						break;
 					}
-					//sp.Buzz (100);
 				} else {
 					Thread.Sleep (10);
 				}
