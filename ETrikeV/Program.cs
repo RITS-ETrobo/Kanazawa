@@ -79,7 +79,7 @@ namespace ETrikeV
 						break;
 					}
 				} else {
-					Thread.Sleep (10);
+					Thread.Sleep (8);
 				}
 			}
 
