@@ -95,7 +95,7 @@ namespace ETrikeV
 			actionLeftTurn(sys, 50, 0, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
 
 			//3秒停止(念のため4秒)
-			Thread.Sleep(400);
+			Thread.Sleep(4000);
 
 			//右に旋回
 			actionRightTurn(sys, 0, 50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない

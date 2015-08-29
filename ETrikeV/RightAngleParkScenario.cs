@@ -91,7 +91,7 @@ namespace ETrikeV
 			actionStraight (sys, -10, 100);
 
 			//3秒停止(念のため4秒)
-			Thread.Sleep(400);
+			Thread.Sleep(4000);
 
 			//コース復帰
 			actionStraight (sys, 20, 100);
