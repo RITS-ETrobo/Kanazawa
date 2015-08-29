@@ -4,7 +4,7 @@ namespace ETrikeV
 {
 	public class StraightScenario : Scenario
 	{
-		private const int LIGHT_WIDTH = 10;
+		private const int LIGHT_WIDTH = 8;
 		private int endTachoCount;
 		private int speed;
 		private Mode edge;

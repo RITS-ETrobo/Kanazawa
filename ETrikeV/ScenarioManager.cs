@@ -13,7 +13,7 @@ namespace ETrikeV
 			scenarioList = new List<Scenario> ();
 			if (mode == Mode.Left) {
 				// Lコース
-				scenarioList.Add (new StraightScenario (  7000, 100, Mode.Right));
+				scenarioList.Add (new StraightScenario (  6800, 100, Mode.Right));
 				scenarioList.Add (new CornerScenario (    8200,  70, 40, Mode.Right));
 				scenarioList.Add (new StraightScenario (  8700,  80, Mode.Right));
 				scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
@@ -23,15 +23,17 @@ namespace ETrikeV
 				//scenarioList.Add(new TestScenario());
 				//scenarioList.Add(new BridgeScenario());
 				#if true
-				scenarioList.Add (new StraightScenario(   6100, 100, Mode.Left));
+				scenarioList.Add (new StraightScenario(   6050, 100, Mode.Left));
 				scenarioList.Add (new CornerScenario (    7350,  70, -30, Mode.Left));
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
-				scenarioList.Add (new LineTraceScenario (10900,  70, Mode.Left));
-				scenarioList.Add (new StraightScenario  (12700,  80, Mode.Left));
-				scenarioList.Add (new LineTraceScenario (13700,  70, Mode.Left));
-				scenarioList.Add (new StraightScenario  (14000,  80, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
+				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
+				scenarioList.Add (new StraightScenario  (14000,  40, Mode.Left));
 				scenarioList.Add (new FigureLScenario  ());
 				scenarioList.Add (new ShinkansenScenario ());
+				scenarioList.Add (new LineTraceScenario (22000,  60, Mode.Left));
+				scenarioList.Add (new StraightScenario(  26000,  80, Mode.Left));
 				#endif
 //				this.scenarioList.Add (new Scenario (Mode.Straight,  6100, 100,    0));
 //				this.scenarioList.Add (new Scenario (Mode.Corner,    7350,   0, -200));

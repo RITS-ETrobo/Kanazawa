@@ -25,7 +25,6 @@ namespace ETrikeV
 			bool isEndScenario = false;
 			int black = 5;
 			int white = 50;
-			//Speaker sp = new Speaker (100);
             
 			// キャリブレーション
             #if true
@@ -58,8 +57,19 @@ namespace ETrikeV
 			robokon.allResetParam();
 
 			//スタート待ち
-			InfoDialog dialogSTART = new InfoDialog("while=" + white + " black=" + black, true);
+			InfoDialog dialogSTART = new InfoDialog("white=" + white + " black=" + black, true);
 			dialogSTART.Show();//Wait for enter to be pressed
+
+			QuestionDialog selectScenario = new QuestionDialog("Yes = L No = R ", "Select"); //ture = L, false = R
+			selectScenario.Show();
+
+			if (selectScenario.IsPositiveSelected == true) {
+				scenarioMng = new ScenarioManager(Mode.Left);
+				dialogSTART.UpdateMessage ("Selected Left");
+			} else {
+				scenarioMng = new ScenarioManager(Mode.Right);
+				dialogSTART.UpdateMessage ("Selected Right");
+			}
 
 			// 最終的な動作開始はタッチセンサ
 			while (!robokon.touchIsPressed())
@@ -79,9 +89,8 @@ namespace ETrikeV
 					if (scenario == null) {
 						break;
 					}
-					//sp.Buzz (100);
 				} else {
-					Thread.Sleep (10);
+					Thread.Sleep (8);
 				}
 			}
 
