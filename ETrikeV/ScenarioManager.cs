@@ -27,7 +27,7 @@ namespace ETrikeV
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
-				scenarioList.Add (new LineTraceScenario (13700,  70, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
 				scenarioList.Add (new StraightScenario  (14000,  40, Mode.Left));
 				scenarioList.Add (new FigureLScenario  ());
 				scenarioList.Add (new ShinkansenScenario ());

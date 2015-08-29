@@ -60,6 +60,17 @@ namespace ETrikeV
 			InfoDialog dialogSTART = new InfoDialog("white=" + white + " black=" + black, true);
 			dialogSTART.Show();//Wait for enter to be pressed
 
+			QuestionDialog selectScenario = new QuestionDialog("Yes = L No = R ", "Select"); //ture = L, false = R
+			selectScenario.Show();
+
+			if (selectScenario.IsPositiveSelected == true) {
+				scenarioMng = new ScenarioManager(Mode.Left);
+				dialogSTART.UpdateMessage ("Selected Left");
+			} else {
+				scenarioMng = new ScenarioManager(Mode.Right);
+				dialogSTART.UpdateMessage ("Selected Right");
+			}
+
 			// 最終的な動作開始はタッチセンサ
 			while (!robokon.touchIsPressed())
 			{

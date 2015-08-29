@@ -293,7 +293,7 @@ namespace ETrikeV
 			}
 
 			// 3回回転しない状態が続いたら段差とする
-			if (motorStopCount == 3)
+			if (motorStopCount == 10)
 			{
 				return true;
 			}

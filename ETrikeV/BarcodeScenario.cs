@@ -24,11 +24,10 @@ namespace ETrikeV
 		/// </summary>
 		int BarcodeBit = 0;
 
-
 		private const int LIGHT_WIDTH = 10;
 		private const int MAX_STEERING_ANGLE = 180;
 		private const int STEER_POWER = 100;
-		private const int RATIO = 25;
+		private const double RATIO = 8.5; //1:3ギアに変更したため、変更
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ETrikeV.BarcodeScenario"/> class.
@@ -75,14 +74,17 @@ namespace ETrikeV
 				Thread.Sleep(5);
 
 				// 値は仮
-				lineTrace(sys, 30, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE/18, STEER_POWER/5);
+				// 黒or緑　とそれ以外ライントレースするようなコードを作成する。
+				// ↓のコードはリフレクションで見ているので、使えない。
+				//lineTrace(sys, 30, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE/18, STEER_POWER/5);
 				if (isStep(sys) == true)
 				{
 					break;
 				}
 			}
 			//後処理
-			sys.color.Mode = ColorMode.Reflection;
+			//sys.color.Mode = ColorMode.Reflection;
+			//次の処理で使う前提なので、センサーモードは戻さない
 			Thread.Sleep(10);
 		}
 
@@ -92,15 +94,17 @@ namespace ETrikeV
 		/// <param name="sys"></param>
 		private void redBarcode(Ev3System sys)
 		{
-			sys.color.Mode = ColorMode.Color;
+			//sys.color.Mode = ColorMode.Color;
+			//カラーセンサーでくるので、処理は要らない
 
 			//値削除
 			BarcodeBit = 0;
 
 			//3cm単位でバーコード読み取り(3cm×10回)
-			for (int loopCounter = 0; loopCounter <= 10; loopCounter++)
+			for (int loopCounter = 0, color = 0; loopCounter <= 10; loopCounter++)
 			{
-				int color = sys.colorRead();
+				color = sys.colorRead();
+
 				//白判定
 				if (color == (int)Color.White)
 				{
