@@ -14,9 +14,13 @@ namespace ETrikeV
 			if (mode == Mode.Left) {
 				// Lコース
 				scenarioList.Add (new StraightScenario (  6800, 100, Mode.Right));
-				scenarioList.Add (new CornerScenario (    8200,  70, 40, Mode.Right));
-				scenarioList.Add (new StraightScenario (  8700,  80, Mode.Right));
-				scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
+				scenarioList.Add (new CornerScenario (    8400,  70, 40, Mode.Right));
+				scenarioList.Add (new StraightScenario ( 11000,  80, Mode.Right));
+				scenarioList.Add (new BridgeScenario ());
+				scenarioList.Add (new LineTraceScenario (15000, 80, Mode.Right));
+				scenarioList.Add (new UndeterminedAreaScenario ());
+				scenarioList.Add (new LineTraceScenario (26000, 80, Mode.Right));
+				//scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
 
 			} else {
 				// Rコース
