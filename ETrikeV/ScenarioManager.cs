@@ -16,6 +16,7 @@ namespace ETrikeV
 				scenarioList.Add (new StraightScenario (  7000, 100, Mode.Right));
 				scenarioList.Add (new CornerScenario (    8200,  70, 40, Mode.Right));
 				scenarioList.Add (new StraightScenario (  8700,  80, Mode.Right));
+				scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
 
 			} else {
 				// Rコース

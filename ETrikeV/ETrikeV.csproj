@@ -52,5 +52,7 @@
     <Compile Include="BridgeScenario.cs" />
     <Compile Include="UndeterminedAreaScenario.cs" />
     <Compile Include="BarcodeScenario.cs" />
+    <Compile Include="RightAngleParkScenario.cs" />
+    <Compile Include="JuretsuParkScenario.cs" />
   </ItemGroup>
 </Project>
