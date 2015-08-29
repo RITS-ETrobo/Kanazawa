@@ -4,7 +4,7 @@ namespace ETrikeV
 {
 	public class CornerScenario : Scenario
 	{
-		private const int LIGHT_WIDTH = 10;
+		private const int LIGHT_WIDTH = 5; //10
 		private int endTachoCount;
 		private int speed;
 		private int direction;

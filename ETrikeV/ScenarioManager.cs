@@ -14,9 +14,13 @@ namespace ETrikeV
 			if (mode == Mode.Left) {
 				// Lコース
 				scenarioList.Add (new StraightScenario (  6800, 100, Mode.Right));
-				scenarioList.Add (new CornerScenario (    8200,  70, 40, Mode.Right));
-				scenarioList.Add (new StraightScenario (  8700,  80, Mode.Right));
-				scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
+				scenarioList.Add (new CornerScenario (    8400,  70, 40, Mode.Right));
+				scenarioList.Add (new StraightScenario ( 11000,  80, Mode.Right));
+				scenarioList.Add (new BridgeScenario ());
+				scenarioList.Add (new LineTraceScenario (15000, 80, Mode.Right));
+				scenarioList.Add (new UndeterminedAreaScenario ());
+				scenarioList.Add (new LineTraceScenario (26000, 80, Mode.Right));
+				//scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
 
 			} else {
 				// Rコース
@@ -29,7 +33,7 @@ namespace ETrikeV
 				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
-				scenarioList.Add (new StraightScenario  (14000,  40, Mode.Left));
+				scenarioList.Add (new StraightScenario  (13950,  40, Mode.Left));	//14000
 				scenarioList.Add (new FigureLScenario  ());
 				scenarioList.Add (new ShinkansenScenario ());
 				scenarioList.Add (new LineTraceScenario (22000,  60, Mode.Left));

@@ -36,7 +36,7 @@ namespace ETrikeV
 			//段差を検知するまでライントレースする
 			while (true)
 			{
-				lineTrace(sys, 30, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				lineTrace(sys, 30, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				if (isStep(sys) == true)
 				{
 					break;
@@ -63,7 +63,7 @@ namespace ETrikeV
 
 			while (true)
 			{
-				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				lineTrace(sys, 50, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				if (sys.getAverageMoveCM() > (nowDistance + 8))
 				{ // 7
 					break;

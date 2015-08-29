@@ -64,7 +64,7 @@ namespace ETrikeV
 			actionStraight(sys, -5, 40);
 
 			//段差を超えるために高いスピードで前進する
-			actionStraight(sys, 22, 70);
+			actionStraight(sys, 22, 60); //70
 
 			//板上のラインに復帰するために首を振ってライン探索する
 			serchLine (sys, 5, true);
@@ -76,14 +76,15 @@ namespace ETrikeV
 			int nowDistance = sys.getAverageMoveCM();
 			while (true) {
 				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-				if (sys.getAverageMoveCM() > (nowDistance + 16)) { // 7
+				if (sys.getAverageMoveCM() > (nowDistance + 10)) { // 16
 					break;
 				}
 				Thread.Sleep (5);
 			}
 				
 			//右に旋回
-			actionRightTurn(sys, -50, 50, 30, 9);		//30度より高い角度だと進みすぎて精密な制御ができない
+			//actionRightTurn(sys, -50, 50, 30, 10);		//30度より高い角度だと進みすぎて精密な制御ができない
+			actionRightTurn(sys, 0, 70, 30, 21);		//20 それなり動いた
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
