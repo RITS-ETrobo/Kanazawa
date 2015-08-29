@@ -33,8 +33,6 @@ namespace ETrikeV
 		/// <returns></returns>
 		public override bool run(Ev3System sys)
 		{
-			bool ret = false;
-
 			//段差を検知するまでライントレースする
 			while (true)
 			{
@@ -73,7 +71,7 @@ namespace ETrikeV
 				Thread.Sleep(5);
 			}
 
-			return ret;
+			return true;
 		}
 
 		/// <summary>
