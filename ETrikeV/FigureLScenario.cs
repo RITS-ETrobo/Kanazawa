@@ -83,7 +83,7 @@ namespace ETrikeV
 			}
 				
 			//右に旋回
-			actionRightTurn(sys, -50, 50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
+			actionRightTurn(sys, -50, 50, 30, 9);		//30度より高い角度だと進みすぎて精密な制御ができない
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);

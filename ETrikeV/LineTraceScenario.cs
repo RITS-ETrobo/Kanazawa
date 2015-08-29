@@ -6,7 +6,7 @@ namespace ETrikeV
 	{
 		private const int MAX_STEERING_ANGLE = 180;
 		private const int STEER_POWER = 100;
-		private const int LIGHT_WIDTH = 10;
+		private const int LIGHT_WIDTH = 8; //10
 		private int endTachoCount;
 		private int speed;
 		private Mode edge;
