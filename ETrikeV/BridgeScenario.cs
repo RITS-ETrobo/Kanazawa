@@ -33,8 +33,6 @@ namespace ETrikeV
 		/// <returns></returns>
 		public override bool run(Ev3System sys)
 		{
-			bool ret = false;
-
 			//段差を検知するまでライントレースする
 			while (true)
 			{
@@ -60,7 +58,20 @@ namespace ETrikeV
 			//ステアリングの傾きを直す
 			actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
 
-			return ret;
+			//ライン復帰のためのライントレース
+			int nowDistance = sys.getAverageMoveCM();
+
+			while (true)
+			{
+				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				if (sys.getAverageMoveCM() > (nowDistance + 8))
+				{ // 7
+					break;
+				}
+				Thread.Sleep(5);
+			}
+
+			return true;
 		}
 
 		/// <summary>
@@ -263,4 +274,3 @@ namespace ETrikeV
 
 	}
 }
-
