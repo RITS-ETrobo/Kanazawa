@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using MonoBrickFirmware.UserInput;
+using MonoBrickFirmware.Display;
 
 namespace ETrikeV
 {
@@ -15,19 +16,27 @@ namespace ETrikeV
 		{
 			ButtonEvents buts = new ButtonEvents();
 			buts.UpPressed += () => {
-				inSpeed += 10;
+				inSpeed += 5;
+				LcdConsole.Clear();
+				LcdConsole.WriteLine("T:" + turn + " In:" + inSpeed + " Out:" + outSpeed);
 			};
 			buts.DownPressed += () => {
-				inSpeed -= 10;
+				inSpeed -= 5;
+				LcdConsole.Clear();
+				LcdConsole.WriteLine("T:" + turn + " In:" + inSpeed + " Out:" + outSpeed);
 			};
 			buts.EnterPressed += () => {
 				end = true;
 			};
 			buts.LeftPressed += () => {
 				turn -= 10;
+				LcdConsole.Clear();
+				LcdConsole.WriteLine("T:" + turn + " In:" + inSpeed + " Out:" + outSpeed);
 			};
 			buts.RightPressed += () => {
 				turn += 10;
+				LcdConsole.Clear();
+				LcdConsole.WriteLine("T:" + turn + " In:" + inSpeed + " Out:" + outSpeed);
 			};
 		}
 
