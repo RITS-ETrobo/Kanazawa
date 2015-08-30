@@ -19,7 +19,7 @@ namespace ETrikeV
 		static void Main(string[] args)
 		{
 			Scenario scenario = null;
-			ScenarioManager scenarioMng = new ScenarioManager(Mode.Right);
+			ScenarioManager scenarioMng;
 			Ev3System robokon = Ev3System.getInstance ();
 			robokon.allResetParam();
 			bool isEndScenario = false;
