@@ -19,7 +19,7 @@ namespace ETrikeV
 			//this.edge = edge;
 		}
 
-		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
+		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, int distance)
 		{
 			int[] tmpDistance = new int[2];
 
@@ -31,15 +31,25 @@ namespace ETrikeV
 			sys.setRightMotorPower(rightPw);
 			sys.setLeftMotorPower(leftPw);
 
-			while (true)
-			{
-				tmpDistance[1] = sys.leftMotorGetMoveCm();
-				if (tmpDistance[1] > (tmpDistance[0] + distance))
-				{
-					break;
+			if (distance > 0) {
+				while (true) {
+					tmpDistance [1] = sys.leftMotorGetMoveCm ();
+					if (tmpDistance [1] > (tmpDistance [0] + distance)) {
+						break;
+					}
+					//8ミリ秒待ち
+					Thread.Sleep (8);
 				}
-				//8ミリ秒待ち
-				Thread.Sleep(8);
+			} else {
+				while (true) {
+					tmpDistance [1] = sys.leftMotorGetMoveCm ();
+					if (tmpDistance [1] < (tmpDistance [0] + distance)) {
+						break;
+					}
+					//8ミリ秒待ち
+					Thread.Sleep (8);
+				}
+			
 			}
 
 			sys.stopMotors ();
@@ -79,30 +89,31 @@ namespace ETrikeV
 			}
 
 			//スタート後に直進
-			actionStraight (sys, 20, 100);
+			//actionStraight (sys, 100, 90);
 
-			//左に90度回転
-			actionLeftTurn(sys, 50, -50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
+			//右に-90度回転
+			actionRightTurn(sys, 0, -50, 80, -30);		//30度より高い角度だと進みすぎて精密な制御ができない
 
 			//ステアリングの傾きを正面に修正する
-			sys.setSteerSlope (0);
+			//sys.setSteerSlope (0);
 
 			//バックする
-			actionStraight (sys, -10, 100);
+			//actionStraight (sys, -10, 100);
 
 			//3秒停止(念のため4秒)
 			Thread.Sleep(4000);
 
 			//コース復帰
-			actionStraight (sys, 20, 100);
+			//actionStraight (sys, 20, 100);
+			actionRightTurn(sys, 50, 0, 60, 50);		//30度より高い角度だと進みすぎて精密な制御ができない
 
 			//右に旋回
-			actionRightTurn(sys, -50, 50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
+			//actionRightTurn(sys, -50, 50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
 
-			return false;
+			return true;
 		}
 	}
 }
