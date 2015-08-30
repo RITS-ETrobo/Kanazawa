@@ -45,7 +45,7 @@ namespace ETrikeV
 			//段差を検知するまでライントレースする
 			while (true)
 			{
-				lineTrace(sys, 30, Mode.Right LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				lineTrace(sys, 30, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				if (isStep(sys) == true)
 				{
 					break;
