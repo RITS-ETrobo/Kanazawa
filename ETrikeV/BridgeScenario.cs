@@ -36,7 +36,7 @@ namespace ETrikeV
 			//段差を検知するまでライントレースする
 			while (true)
 			{
-				lineTrace(sys, 30, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				lineTrace(sys, 50, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				if (isStep(sys) == true)
 				{
 					break;
@@ -48,24 +48,29 @@ namespace ETrikeV
 			actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
 
 			//段差を超えるための助走のための後退
-			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 7, false);
+			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 5, false);
 
 			//ステアリングの傾きを直す
 			actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
+
 			//前進して段差を超える
 			actionAdvance(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 40, false);
 
 			//ステアリングの傾きを直す
 			actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
 
+			//段差を超えた後に復帰しやすくするため
+			Thread.Sleep(8);
+			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 10, false);
+
 			//ライン復帰のためのライントレース
 			int nowDistance = sys.getAverageMoveCM();
 
 			while (true)
 			{
-				lineTrace(sys, 50, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				lineTrace(sys, 30, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				if (sys.getAverageMoveCM() > (nowDistance + 8))
-				{ // 7
+				{
 					break;
 				}
 				Thread.Sleep(5);
