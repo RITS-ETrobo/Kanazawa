@@ -27,7 +27,6 @@ namespace ETrikeV
 		private const int LIGHT_WIDTH = 10;
 		private const int MAX_STEERING_ANGLE = 180;
 		private const int STEER_POWER = 100;
-		private const double RATIO = 8.5; //1:3ギアに変更したため、変更
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ETrikeV.BarcodeScenario"/> class.
@@ -75,8 +74,7 @@ namespace ETrikeV
 
 				// 値は仮
 				// 黒or緑　とそれ以外ライントレースするようなコードを作成する。
-				// ↓のコードはリフレクションで見ているので、使えない。
-				//lineTrace(sys, 30, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE/18, STEER_POWER/5);
+				barcodeLineTrace(sys, 30, MAX_STEERING_ANGLE / 18, STEER_POWER / 5);
 				if (isStep(sys) == true)
 				{
 					break;
@@ -86,6 +84,56 @@ namespace ETrikeV
 			//sys.color.Mode = ColorMode.Reflection;
 			//次の処理で使う前提なので、センサーモードは戻さない
 			Thread.Sleep(10);
+		}
+
+		/// <summary>
+		/// ライントレース
+		/// </summary>
+		/// <param name="sys">Sys.</param>
+		/// <param name="speed">Speed.</param>
+		/// <param name="maxAngle">Max angle.</param>
+		/// <param name="steerPwr">Steer pwr.</param>
+		protected void barcodeLineTrace(Ev3System sys, int speed, int maxAngle, int steerPwr)
+		{
+			int light = sys.colorRead();
+			int steerCnt = sys.steerGetTachoCount();
+			//白・黄色だったら
+			if (light == (int)Color.White || light == (int)Color.Yellow)
+			{
+				// 白い場合は右に曲がる
+				if (steerCnt < maxAngle)
+				{
+					sys.setSteerPower(steerPwr);
+				}
+				else
+				{
+					sys.steerBrake();
+				}
+				sys.setLeftMotorPower(speed);
+				sys.setRightMotorPower(0);
+			}
+			//黒・緑だったっら
+			else if (light == (int)Color.Black || light == (int)Color.Green)
+			{
+				// 黒い場合は左に曲がる
+				if (steerCnt > -1 * maxAngle)
+				{
+					sys.setSteerPower(-1 * steerPwr);
+				}
+				else
+				{
+					sys.steerBrake();
+				}
+				sys.setLeftMotorPower(0);
+				sys.setRightMotorPower(speed);
+			}
+			else
+			{
+				// 規定した色以外範囲内ならステアリングをとめてゆっくり進む
+				sys.steerBrake();
+				sys.setLeftMotorPower(speed / 2);
+				sys.setRightMotorPower(speed / 2);
+			}
 		}
 
 		/// <summary>
