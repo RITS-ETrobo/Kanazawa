@@ -4,17 +4,20 @@ namespace ETrikeV
 {
 	public class CornerScenario : Scenario
 	{
+		private const int SPEED_WIDTH = 20;
 		private const int LIGHT_WIDTH = 5; //10
 		private int endTachoCount;
-		private int speed;
+		private int inSpeed;
+		private int outSpeed;
 		private int direction;
 		private Mode edge;
 		private bool init = false;
 
-		public CornerScenario (int endTachoCount, int speed, int direction, Mode edge)
+		public CornerScenario (int endTachoCount, int inSpeed, int outSpeed, int direction, Mode edge)
 		{
 			this.endTachoCount = endTachoCount;
-			this.speed = speed;
+			this.inSpeed = inSpeed;
+			this.outSpeed = outSpeed;
 			this.direction = direction;
 			this.edge = edge;
 		}
@@ -33,56 +36,44 @@ namespace ETrikeV
 				init = true;
 			}
 
+			int leftMotorPwr, rightMotorPwr;
 			int light = sys.colorRead ();
 			if (direction <= 0) { // 左カーブ
+				leftMotorPwr = inSpeed;
+				rightMotorPwr = outSpeed;
 				if (edge == Mode.Left) {
 					if (light > sys.TargetLight + LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed / 2);
-						sys.setRightMotorPower (speed / 4);
+						leftMotorPwr = rightMotorPwr;
 					} else if (light < sys.TargetLight - LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed / 5);
-						sys.setRightMotorPower (speed);
-					} else {
-						sys.setLeftMotorPower (speed / 4);
-						sys.setRightMotorPower (speed / 4);
+						leftMotorPwr = 0;
 					}
 				} else {
 					if (light > sys.TargetLight + LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed / 5);
-						sys.setRightMotorPower (speed);
+						leftMotorPwr = 0;
 					} else if (light < sys.TargetLight - LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed / 2);
-						sys.setRightMotorPower (speed / 4);
-					} else {
-						sys.setLeftMotorPower (speed / 4);
-						sys.setRightMotorPower (speed / 4);
+						leftMotorPwr = rightMotorPwr;
 					}
 				}
 			} else { // 右カーブ
+				leftMotorPwr = outSpeed;
+				rightMotorPwr = inSpeed;
 				if (edge == Mode.Left) {
 					if (light > sys.TargetLight + LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed);
-						sys.setRightMotorPower (speed / 5);
+						rightMotorPwr = 0;
 					} else if (light < sys.TargetLight - LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed / 4);
-						sys.setRightMotorPower (speed / 2);
-					} else {
-						sys.setLeftMotorPower (speed / 4);
-						sys.setRightMotorPower (speed / 4);
+						rightMotorPwr = leftMotorPwr;
 					}
 				} else {
 					if (light > sys.TargetLight + LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed / 4);
-						sys.setRightMotorPower (speed / 2);
+						rightMotorPwr = leftMotorPwr;
 					} else if (light < sys.TargetLight - LIGHT_WIDTH) {
-						sys.setLeftMotorPower (speed);
-						sys.setRightMotorPower (speed / 5);
-					} else {
-						sys.setLeftMotorPower (speed / 4);
-						sys.setRightMotorPower (speed / 4);
+						rightMotorPwr = 0;
 					}
 				}
 			}
+
+			sys.setLeftMotorPower (leftMotorPwr);
+			sys.setRightMotorPower (rightMotorPwr);
 
 			return false;
 		}
