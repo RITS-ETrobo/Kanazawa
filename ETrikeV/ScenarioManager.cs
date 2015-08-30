@@ -13,8 +13,8 @@ namespace ETrikeV
 			scenarioList = new List<Scenario> ();
 			if (mode == Mode.Left) {
 				// Lコース
-				scenarioList.Add (new StraightScenario (  6800, 100, Mode.Right));
-				scenarioList.Add (new CornerScenario (    8400,  70, 40, Mode.Right));
+				scenarioList.Add (new StraightScenario (  6900, 100, Mode.Right));	//6800
+				scenarioList.Add (new CornerScenario (    8400,  40, 100, 40, Mode.Right));
 				scenarioList.Add (new StraightScenario ( 11000,  80, Mode.Right));
 				scenarioList.Add (new BridgeScenario ());
 				scenarioList.Add (new LineTraceScenario (15000, 80, Mode.Right));
@@ -24,11 +24,12 @@ namespace ETrikeV
 
 			} else {
 				// Rコース
-				//scenarioList.Add(new TestScenario());
-				//scenarioList.Add(new BridgeScenario());
 				#if true
-				scenarioList.Add (new StraightScenario(   6050, 100, Mode.Left));
-				scenarioList.Add (new CornerScenario (    7350,  70, -30, Mode.Left));
+				scenarioList.Add (new StraightScenario(    500,  50, Mode.Left));			// 最初の直線1
+				scenarioList.Add (new StraightScenario(   5800, 100, Mode.Left));			// 最初の直線2
+				scenarioList.Add (new StraightScenario(   6100,  50 ,Mode.Left));			// 最初の直線3
+				scenarioList.Add (new CornerScenario (    7200,  25, 60, -30, Mode.Left));	// ヘアピン
+				scenarioList.Add (new LineTraceScenario ( 7400,  60, Mode.Left));			// ヘアピン後の角度補正
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
@@ -38,6 +39,8 @@ namespace ETrikeV
 				scenarioList.Add (new ShinkansenScenario ());
 				scenarioList.Add (new LineTraceScenario (22000,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario(  26000,  80, Mode.Left));
+				#else
+				scenarioList.Add(new TestScenario());
 				#endif
 //				this.scenarioList.Add (new Scenario (Mode.Straight,  6100, 100,    0));
 //				this.scenarioList.Add (new Scenario (Mode.Corner,    7350,   0, -200));
