@@ -25,10 +25,10 @@ namespace ETrikeV
 			} else {
 				// Rコース
 				#if true
-				scenarioList.Add (new StraightScenario(    500,  50, Mode.Left));
-				scenarioList.Add (new StraightScenario(   5800, 100, Mode.Left));
-				scenarioList.Add (new StraightScenario(   6100,  50 ,Mode.Left));
-				scenarioList.Add (new CornerScenario (    7200,  25, 60, -30, Mode.Left));
+				scenarioList.Add (new StraightScenario(    500,  50, Mode.Left));			// 最初の直線1
+				scenarioList.Add (new StraightScenario(   5800, 100, Mode.Left));			// 最初の直線2
+				scenarioList.Add (new StraightScenario(   6100,  50 ,Mode.Left));			// 最初の直線3
+				scenarioList.Add (new CornerScenario (    7200,  25, 60, -30, Mode.Left));	// ヘアピン
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
