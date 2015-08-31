@@ -7,8 +7,8 @@ namespace ETrikeV
 	public class FigureLScenario : Scenario
 	{
 
-		private const int LIGHT_WIDTH = 10;
-		private const int MAX_STEERING_ANGLE = 180;
+		private const int LIGHT_WIDTH = 5;//10
+		private const int MAX_STEERING_ANGLE = 80; //180
 		private const int STEER_POWER = 100;
 
 		/// <summary>
@@ -60,12 +60,13 @@ namespace ETrikeV
 			//段差を検知する
 			/*************************************************/
 			while (true) {
-			lineTrace(sys, 30, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-			if (isStep (sys) == true) {
-			sys.stopMotors ();
-			break;
-			}
-			Thread.Sleep (5);
+				//lineTrace(sys, 30, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				straightTrace (sys, 20, Mode.Left, LIGHT_WIDTH);
+				if (isStep (sys) == true) {
+					sys.stopMotors ();
+					break;
+				}
+				Thread.Sleep (5);
 			}
 			/*************************************************/
 
@@ -95,20 +96,21 @@ namespace ETrikeV
 			//ライントレースで前進（規定距離だけ）
 			int nowDistance = sys.getAverageMoveCM();
 			while (true) {
-			lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-			if (sys.getAverageMoveCM() > (nowDistance + 15)) { // 12
-			sys.stopMotors ();
-			Thread.Sleep(100);
-			break;
-			}
-			Thread.Sleep (5);
+				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				//straightTrace (sys, 30, Mode.Left, LIGHT_WIDTH);
+				if (sys.getAverageMoveCM() > (nowDistance + 14)) { // 16
+					sys.stopMotors ();
+					Thread.Sleep(100);
+					break;
+				}
+				Thread.Sleep (5);
 			}
 			/*************************************************/
 
 			//2回に分けて右に旋回する
 			/*************************************************/
 			//1回目
-			actionRightTurn(sys, 0, 60, 30, 11);	//10
+			actionRightTurn(sys, 0, 70, 30, 11);	//70
 			Thread.Sleep(100);
 
 			//位置修正
@@ -117,7 +119,7 @@ namespace ETrikeV
 			Thread.Sleep(100);
 
 			//2回目
-			actionRightTurn(sys, 10, 40, 60, 11);	//10
+			actionRightTurn(sys, 10, 40, 60, 13);	//10
 			Thread.Sleep(100);
 			/*************************************************/
 
@@ -128,7 +130,7 @@ namespace ETrikeV
 
 			//板から降りる
 			//斜め方向に進むので、完了後はライン探索が必須
-			actionStraight(sys, 10, 40); //15
+			actionStraight(sys, 8, 40); //10
 			/*************************************************/
 
 			//ライン上に復帰する
