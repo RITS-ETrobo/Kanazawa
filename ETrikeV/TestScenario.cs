@@ -7,6 +7,7 @@ namespace ETrikeV
 		private double kp = 0.0;
 		private double ki = 0.0;
 		private double kd = 0.0;
+		private double freq = 0.008;
 
 		private int[] diff = new int[2];
 		private double integral = 0;
@@ -24,17 +25,15 @@ namespace ETrikeV
 
 			diff [1] = diff [0];
 			diff [0] = light - sys.TargetLight;
-			integral += (diff [0] + diff [1]) / 2 * 0.005;
+			integral += (diff [0] + diff [1]) / 2 * freq;
 
 			p = kp * diff [0];
 			i = ki * integral;
-			d = kd * (diff [0] - diff [1]) / 0.005;
+			d = kd * (diff [0] - diff [1]) / freq;
 
 			ret = (int)(p + i + d);
-			if (ret > 100)
-				ret = 100;
-			if (ret < -100)
-				ret = -100;
+			ret = (ret > 100) ? 100 : ret;
+			ret = (ret < -100) ? -100 : ret;
 
 			return ret;
 		}
