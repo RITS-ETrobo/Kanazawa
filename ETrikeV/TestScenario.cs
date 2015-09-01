@@ -1,13 +1,16 @@
 ﻿using System;
+using MonoBrickFirmware.Display;
 
 namespace ETrikeV
 {
 	public class TestScenario : Scenario
 	{
-		private double kp = 0.0;
+		private double kp = 4.5;
 		private double ki = 0.0;
-		private double kd = 0.0;
-		private double freq = 0.008;
+		private double kd = 8.0;
+		private double freq = 0.004;
+		private int cnt = 0;
+		private const double WHEEL_BASE = 212.0;
 
 		private int[] diff = new int[2];
 		private double integral = 0;
@@ -18,7 +21,7 @@ namespace ETrikeV
 			this.speed = speed;
 		}
 
-		private int pd(Ev3System sys, int light)
+		private int pid(Ev3System sys, int light)
 		{
 			int ret = 0;
 			double p, i, d;
@@ -32,6 +35,11 @@ namespace ETrikeV
 			d = kd * (diff [0] - diff [1]) / freq;
 
 			ret = (int)(p + i + d);
+
+			if (cnt++ % 120 == 0) {
+				LcdConsole.Clear ();
+				LcdConsole.WriteLine ("PID : " + ret);
+			}
 			ret = (ret > 100) ? 100 : ret;
 			ret = (ret < -100) ? -100 : ret;
 
@@ -40,25 +48,16 @@ namespace ETrikeV
 
 		private void steerCtrl(Ev3System sys, int leftPwr, int rightPwr)
 		{
-			int steerPwr = 100;
-			int diffP = leftPwr - rightPwr;
-			int target = diffP * 18 / 10;
+			int target = 0;
+			if (leftPwr != rightPwr) {
+				double r = (rightPwr + leftPwr) / (rightPwr - leftPwr) * (121 / 2);
+				target = (int)(Math.Atan (WHEEL_BASE / r) * 180 / Math.PI * 8 * -1);
+			}
 			int current = sys.steerGetTachoCount ();
-
-			// max値付近の場合は止める
-			if (Math.Abs(target - current) < 3) {
-				sys.steerBrake ();
-				return;
-			}
-
-			if (Math.Abs (target - current) < 50) {
-				steerPwr = 50;
-			}
-			if (current < target) {
-				sys.setSteerPower (steerPwr);
-			} else {
-				sys.setSteerPower (-1 * steerPwr);
-			}
+			int diff = (target - current) * 2;
+			diff = (diff > 100) ? 100 : diff;
+			diff = (diff < -100) ? -100 : diff;
+			sys.setSteerPower (diff);
 
 			return;
 		}
@@ -67,7 +66,7 @@ namespace ETrikeV
 		{
 			int leftP, rightP;
 			int light = sys.colorRead ();
-			int pdVal = pd(sys, light);
+			int pdVal = pid(sys, light);
 
 			leftP = speed;
 			rightP = speed;
@@ -78,6 +77,8 @@ namespace ETrikeV
 			}
 
 			steerCtrl (sys, leftP, rightP);
+			sys.setLeftMotorPower (leftP);
+			sys.setRightMotorPower (rightP);
 
 			return false;
 		}
