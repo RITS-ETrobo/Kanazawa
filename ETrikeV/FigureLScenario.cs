@@ -98,7 +98,7 @@ namespace ETrikeV
 			while (true) {
 				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				//straightTrace (sys, 30, Mode.Left, LIGHT_WIDTH);
-				if (sys.getAverageMoveCM() > (nowDistance + 14)) { // 16
+				if (sys.getAverageMoveCM() > (nowDistance + 15)) { // 16
 					sys.stopMotors ();
 					Thread.Sleep(100);
 					break;
@@ -136,7 +136,7 @@ namespace ETrikeV
 			//ライン上に復帰する
 			/*************************************************/
 			//板から下りてラインを探す
-			serchLine (sys, 5, true);
+			serchLine (sys, 4, true); //5
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);

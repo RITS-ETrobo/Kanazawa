@@ -162,7 +162,7 @@ namespace ETrikeV
 			int[] distance = new int[2];
 
 			/***********************************************/
-			sys.setSteerSlope(60);
+			sys.setSteerSlope(70); //60
 			distance[0] = sys.leftMotorGetMoveCm ();
 			sys.setLeftMotorPower(pw);
 			sys.setRightMotorPower(pw * -1);
@@ -195,7 +195,7 @@ namespace ETrikeV
 			int[] distance = new int[2];
 
 			/***********************************************/
-			sys.setSteerSlope(-60);
+			sys.setSteerSlope(-70); //70
 			distance [0] = sys.rightMotorGetMoveCm ();
 			sys.setLeftMotorPower(pw * -1);
 			sys.setRightMotorPower(pw);
