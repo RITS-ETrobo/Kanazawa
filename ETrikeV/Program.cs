@@ -82,16 +82,20 @@ namespace ETrikeV
 			scenario = scenarioMng.getCurrentScenario();
 
 			// メインループ
-			while (!robokon.touchIsPressed()) {
-				isEndScenario = scenario.run (robokon);
-				if (isEndScenario) {
-					scenario = scenarioMng.updateScenario ();
-					if (scenario == null) {
-						break;
+			try {
+				while (!robokon.touchIsPressed()) {
+					isEndScenario = scenario.run (robokon);
+					if (isEndScenario) {
+						scenario = scenarioMng.updateScenario ();
+						if (scenario == null) {
+							break;
+						}
+					} else {
+						Thread.Sleep (4);
 					}
-				} else {
-					Thread.Sleep (8);
 				}
+			} catch (Exception e) {
+				Console.WriteLine (e.ToString ());
 			}
 
 			// 後処理
