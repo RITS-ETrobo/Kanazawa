@@ -181,7 +181,7 @@ namespace ETrikeV
 				{
 					break;
 				}
-				Thread.Sleep(1);
+				Thread.Sleep(5); //1
 			}
 
 			sys.stopMotors ();
@@ -214,7 +214,7 @@ namespace ETrikeV
 				{
 					break;
 				}
-				Thread.Sleep(1);
+				Thread.Sleep(5); //1
 			}
 
 			sys.stopMotors ();
