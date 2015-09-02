@@ -10,7 +10,6 @@ namespace ETrikeV
 		private double ki = 0.0;
 		private double kd = 0.0;
 		private double freq = 0.004;
-		private const double WHEEL_BASE = 212.0;
 
 		private int pos = 0;
 
@@ -97,11 +96,8 @@ namespace ETrikeV
 
 		private void steerCtrl(Ev3System sys, int leftPwr, int rightPwr)
 		{
-			int target = 0;
-			if (leftPwr != rightPwr) {
-				double r = (rightPwr + leftPwr) / (rightPwr - leftPwr) * (121 / 2);
-				target = (int)(Math.Atan (WHEEL_BASE / r) * 180 / Math.PI * 8 * -1);
-			}
+			int target = SteerCtrl.getSteeringAngle (leftPwr, rightPwr);
+			target *= 8; // degree -> tacho
 			int current = sys.steerGetTachoCount ();
 			int diff = (target - current) * 2;
 			diff = (diff > 100) ? 100 : diff;
