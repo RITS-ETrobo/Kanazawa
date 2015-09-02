@@ -17,7 +17,11 @@ namespace ETrikeV
 				scenarioList.Add (new StraightScenario (  6900, 100, Mode.Right));	//6800
 				scenarioList.Add (new CornerScenario (    8400,  40, 100, 40, Mode.Right));
 				scenarioList.Add (new StraightScenario ( 11000,  80, Mode.Right));
+				#if true
 				scenarioList.Add (new BridgeScenario ());
+				#else
+				scenarioList.Add(new BridgeEscapeScenario(Mode.Right, Mode.Right));
+				#endif
 				scenarioList.Add (new LineTraceScenario (15000, 80, Mode.Right));
 				scenarioList.Add (new UndeterminedAreaScenario ());
 				scenarioList.Add (new LineTraceScenario (26000, 80, Mode.Right));
