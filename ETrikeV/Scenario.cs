@@ -160,12 +160,15 @@ namespace ETrikeV
 		private bool serchRight(Ev3System sys, int pw, int range)
 		{
 			int[] distance = new int[2];
+			int leftPw = pw;
+			int rightPw = (pw * -1);
+			int slope = 90;
 
 			/***********************************************/
-			sys.setSteerSlope(70); //60
+			sys.setSteerSlope(slope); //60
 			distance[0] = sys.leftMotorGetMoveCm ();
-			sys.setLeftMotorPower(pw);
-			sys.setRightMotorPower(pw * -1);
+			sys.setLeftMotorPower(leftPw);
+			sys.setRightMotorPower(rightPw);
 
 			//右回転
 			while (true)
@@ -193,12 +196,15 @@ namespace ETrikeV
 		private bool serchLeft(Ev3System sys, int pw, int range)
 		{
 			int[] distance = new int[2];
+			int leftPw = (pw * -1);
+			int rightPw = pw;
+			int slope = 90;
 
 			/***********************************************/
-			sys.setSteerSlope(-70); //70
+			sys.setSteerSlope(slope); //70
 			distance [0] = sys.rightMotorGetMoveCm ();
-			sys.setLeftMotorPower(pw * -1);
-			sys.setRightMotorPower(pw);
+			sys.setLeftMotorPower(leftPw);
+			sys.setRightMotorPower(rightPw);
 
 			//左回転
 			while (true)
@@ -230,7 +236,7 @@ namespace ETrikeV
 		/// <param name="range">Range.</param>
 		protected  void serchLine(Ev3System sys, int range, bool isStartRight)
 		{
-			int pw = 30;
+			int pw = 15; //30
 
 			sys.stopMotors ();
 			sys.color.Mode = ColorMode.Color;
@@ -295,6 +301,7 @@ namespace ETrikeV
 			// 3回回転しない状態が続いたら段差とする
 			if (motorStopCount == 10)
 			{
+				motorStopCount = 0;
 				return true;
 			}
 

@@ -19,13 +19,14 @@ namespace ETrikeV
 		/// <param name="leftPw">Left pw.</param>
 		/// <param name="slop">Slop.</param>
 		/// <param name="distance">Distance.</param>
-		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
+		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, uint distance)
 		{
 			int[] tmpDistance = new int[2];
+			int slope = SteerCtrl.getSteeringAngle (leftPw, rightPw);
 
 			sys.stopMotors ();
 
-			sys.setSteerSlope (slop);
+			sys.setSteerSlope (slope);
 
 			tmpDistance[0] = sys.leftMotorGetMoveCm();
 			if (rightPw == 0) {
@@ -79,7 +80,7 @@ namespace ETrikeV
 			//段差を超えるために高いスピードで前進する
 			actionStraight(sys, 5, 40); 
 			Thread.Sleep(10);
-			actionStraight(sys, 8, 70); 	//10
+			actionStraight(sys, 8, 80); 	//10
 			/*************************************************/
 
 			//板上のラインに復帰する
@@ -98,7 +99,7 @@ namespace ETrikeV
 			while (true) {
 				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				//straightTrace (sys, 30, Mode.Left, LIGHT_WIDTH);
-				if (sys.getAverageMoveCM() > (nowDistance + 15)) { // 16
+				if (sys.getAverageMoveCM() > (nowDistance + 17)) { // 16
 					sys.stopMotors ();
 					Thread.Sleep(100);
 					break;
@@ -107,20 +108,13 @@ namespace ETrikeV
 			}
 			/*************************************************/
 
-			//2回に分けて右に旋回する
+			//右に旋回する
 			/*************************************************/
-			//1回目
-			actionRightTurn(sys, 0, 70, 30, 11);	//70
+			//actionRightTurn(sys, 10, 50, 30, 12);	//11
+			//actionRightTurn(sys, 15, 50, 30, 17);	//これはかなり良い
+			actionRightTurn(sys, 16, 50, 19);	//
 			Thread.Sleep(100);
 
-			//位置修正
-			sys.setSteerSlope (0);
-			actionStraight(sys, 1, 20); 	//3
-			Thread.Sleep(100);
-
-			//2回目
-			actionRightTurn(sys, 10, 40, 60, 13);	//10
-			Thread.Sleep(100);
 			/*************************************************/
 
 			//板から下りる
@@ -130,13 +124,13 @@ namespace ETrikeV
 
 			//板から降りる
 			//斜め方向に進むので、完了後はライン探索が必須
-			actionStraight(sys, 8, 40); //10
+			actionStraight(sys, 10, 40); //10
 			/*************************************************/
 
 			//ライン上に復帰する
 			/*************************************************/
 			//板から下りてラインを探す
-			serchLine (sys, 4, true); //5
+			serchLine (sys, 3, true); //5
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
