@@ -56,5 +56,6 @@
     <Compile Include="JuretsuParkScenario.cs" />
     <Compile Include="CornerCheckScenario.cs" />
     <Compile Include="SteerCtrl.cs" />
+    <Compile Include="BridgeEscapeScenario.cs" />
   </ItemGroup>
 </Project>
