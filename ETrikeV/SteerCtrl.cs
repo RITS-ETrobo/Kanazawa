@@ -29,11 +29,28 @@ namespace ETrikeV
 			int target = 0;
 
 			if (leftMotorPower != rightMotorPower) {
-				double r = (rightMotorPower + leftMotorPower) / (rightMotorPower - leftMotorPower) * (TREAD / 2);
+				double r = getRadius (leftMotorPower, rightMotorPower);
 				target = (int)(Math.Atan (WHEEL_BASE / r) * 180 / Math.PI * -1);
 			}
 
 			return target;
+		}
+
+		/// <summary>
+		/// カーブ半径を返します(mm)
+		/// </summary>
+		/// <returns>The radius.</returns>
+		/// <param name="leftMotorPower">Left motor power.</param>
+		/// <param name="rightMotorPower">Right motor power.</param>
+		public static double getRadius(int leftMotorPower, int rightMotorPower)
+		{
+			double radius = 0.0;
+
+			if (leftMotorPower != rightMotorPower) {
+				radius = (rightMotorPower + leftMotorPower) / (rightMotorPower - leftMotorPower) * (TREAD / 2);
+			}
+
+			return radius;
 		}
 	}
 }
