@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace ETrikeV
 {
@@ -12,7 +13,7 @@ namespace ETrikeV
 		/// </summary>
 		private BarcodeScenario theBarcode;
 
-		private int[] motionList; //値は仮 
+		//private int[] motionList; //値は仮 
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ETrikeV.UndeterminedAreaScenario"/> class.
@@ -22,7 +23,7 @@ namespace ETrikeV
 			// コンストラクタでメモリ確保はしたくないが、
 			// 直前だとディレイがありそうなので、事前に生成しておく
 			theBarcode = new BarcodeScenario();
-			motionList = new int[5]; //値は仮 
+			//motionList = new int[5]; //値は仮 
 
 		}
 
@@ -37,6 +38,22 @@ namespace ETrikeV
 
 			//ここから、仕様未確定エリアの動作
 
+			/*
+			仕様未確定エリアのマス
+			マスのサイズは260mm
+
+			        ←進行方向
+			      ┌────
+			┌──┼──┐
+			│││││││
+			│┼┼┼┼┼│
+			│┼┼┼┼┼│
+			│┼┼┼┼┼│
+			│┼┼┼┼┼│
+			└─┼───┘
+			    │
+
+			*/
 			//ルート生成
 			createUndeterminedAreaRoot(sys);
 
@@ -68,6 +85,7 @@ namespace ETrikeV
 			barcodeBit = barcodeBit >> 2;
 			int cell4 = (barcodeBit & 0x3);
 
+			/* 使わないのでコメントアウト
 			//優先コースの重み付け計算
 			//コースごとの差を見る
 			int courseA = System.Math.Abs(cell1 - cell2);
@@ -105,38 +123,129 @@ namespace ETrikeV
 				}
 
 			}
+            */
 
-			//後でEnum化したい
-			//左:1
-			//まっすぐ:2
-			//右:3
-			//終わり:0
-			motionList.Initialize();
-			//if (prioritCourse == 1)
+			//提出したアルゴリズムは面倒なので、簡単な方式にする。
+
+			// 入る前のタコを取得する
+			//int leftStartCount = sys.leftMotorGetTachoCount();
+			//int rightStartCount = sys.rightMotorGetTachoCount();
+
+
+
+			//マスのあいている場所を探す
+			if (cell2 != 0x00 || cell1 != 0x00)
 			{
-				//2に入れない
-				if (cell2 == 0x00)
+				if (cell2 != 0x00)
 				{
-					//3に入れない
-					if (cell3 == 0x00)
-					{
-						motionList[0] = 2;
-						motionList[1] = 1;
-						motionList[2] = 2;
-						motionList[3] = 2;
-					}
-					//仕方ないから4から入る
-					else
-					{
-						motionList[0] = 3;
-						motionList[1] = 1;
-						motionList[2] = 2;
-						motionList[3] = 2;
-					}
+					//ちょっとバックする
+					actionStraight(sys, 15, 50);
 				}
+				//左に行く
+				//ぶつかるまでまっすぐ行く
+				//ぶつかったら右へ行く
+				//次にぶつかったら左へいく
+				//を繰り返す
+			}
+			else if (cell3 != 0x00 || cell4 != 0x00)
+			{
+				if (cell3 != 0x00)
+				{
+					//ちょっと進む
+				}
+				//右に行く
+				//ぶつかるまでまっすぐ行く
+				//ぶつかったら左へ行く
+				//次にぶつかったら右へいく
+				//を繰り返す
 			}
 
 			return;
+		}
+
+
+		/// <summary>
+		/// 右に曲がる(Lシナリオからコピー)
+		/// </summary>
+		/// <param name="sys">Sys.</param>
+		/// <param name="rightPw">Right pw.</param>
+		/// <param name="leftPw">Left pw.</param>
+		/// <param name="distance">Distance.</param>
+		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, uint distance)
+		{
+			int[] tmpDistance = new int[2];
+			int slope = 0;
+
+			sys.stopMotors ();
+
+			sys.setSteerSlope (slope);
+
+			tmpDistance[0] = sys.leftMotorGetMoveCm();
+			if (rightPw == 0) {
+				sys.rightMotorBrake ();
+			} else {
+				sys.setRightMotorPower (rightPw);
+			}
+			if (leftPw == 0) {
+				sys.leftMotorBrake ();
+			} else {
+				sys.setLeftMotorPower (leftPw);
+			}
+
+			while (true)
+			{
+				tmpDistance[1] = sys.leftMotorGetMoveCm();
+				if (tmpDistance[1] > (tmpDistance[0] + distance))
+				{
+					break;
+				}
+				//8ミリ秒待ち
+				Thread.Sleep(8);
+			}
+
+			sys.stopMotors ();
+		}
+
+		/// <summary>
+		/// 左に曲がる
+		/// </summary>
+		/// <param name="sys">Sys.</param>
+		/// <param name="rightPw">Right pw.</param>
+		/// <param name="leftPw">Left pw.</param>
+		/// <param name="distance">Distance.</param>
+		private void actionLeftTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, uint distance)
+		{
+			int[] tmpDistance = new int[2];
+			int slope = 0;
+
+			sys.stopMotors ();
+
+			sys.setSteerSlope (slope);
+
+			tmpDistance[0] = sys.rightMotorGetMoveCm();
+			if (rightPw == 0) {
+				sys.rightMotorBrake ();
+			} else {
+				sys.setRightMotorPower (rightPw);
+			}
+			if (leftPw == 0) {
+				sys.leftMotorBrake ();
+			} else {
+				sys.setLeftMotorPower (leftPw);
+			}
+
+			while (true)
+			{
+				tmpDistance[1] = sys.rightMotorGetMoveCm();
+				if (tmpDistance[1] > (tmpDistance[0] + distance))
+				{
+					break;
+				}
+				//8ミリ秒待ち
+				Thread.Sleep(8);
+			}
+
+			sys.stopMotors ();
 		}
 	}
 }
