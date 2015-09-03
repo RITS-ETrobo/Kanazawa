@@ -57,5 +57,9 @@
     <Compile Include="CornerCheckScenario.cs" />
     <Compile Include="SteerCtrl.cs" />
     <Compile Include="BridgeEscapeScenario.cs" />
+    <Compile Include="EV3\Brick.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EV3\" />
   </ItemGroup>
 </Project>
