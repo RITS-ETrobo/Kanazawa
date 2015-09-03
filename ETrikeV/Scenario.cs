@@ -198,7 +198,7 @@ namespace ETrikeV
 			int[] distance = new int[2];
 			int leftPw = (pw * -1);
 			int rightPw = pw;
-			int slope = 90;
+			int slope = -90;
 
 			/***********************************************/
 			sys.setSteerSlope(slope); //70
@@ -236,7 +236,7 @@ namespace ETrikeV
 		/// <param name="range">Range.</param>
 		protected  void serchLine(Ev3System sys, int range, bool isStartRight)
 		{
-			int pw = 15; //30
+			int pw = 20; //30
 
 			sys.stopMotors ();
 			sys.color.Mode = ColorMode.Color;
@@ -282,6 +282,8 @@ namespace ETrikeV
 		/// <param name="sys">Sys.</param>
 		protected  bool isStep(Ev3System sys)
 		{
+			const int stopCount = 5;
+
 			// 現在の後輪のタコを取得する
 			leftCount [0] = sys.leftMotorGetTachoCount ();
 			rightCount [0] = sys.rightMotorGetTachoCount ();
@@ -299,7 +301,7 @@ namespace ETrikeV
 			}
 
 			// 3回回転しない状態が続いたら段差とする
-			if (motorStopCount == 10)
+			if (motorStopCount == stopCount)
 			{
 				motorStopCount = 0;
 				return true;

@@ -8,7 +8,7 @@ namespace ETrikeV
 	{
 
 		private const int LIGHT_WIDTH = 5;//10
-		private const int MAX_STEERING_ANGLE = 80; //180
+		private const int MAX_STEERING_ANGLE = 160; //180
 		private const int STEER_POWER = 100;
 
 		/// <summary>
@@ -86,7 +86,7 @@ namespace ETrikeV
 			//板上のラインに復帰する
 			/*************************************************/
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys, 3, true);
+			serchLine (sys, 2, true);
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
@@ -130,7 +130,7 @@ namespace ETrikeV
 			//ライン上に復帰する
 			/*************************************************/
 			//板から下りてラインを探す
-			serchLine (sys, 3, true); //5
+			serchLine (sys, 2, true); //5
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
@@ -141,12 +141,12 @@ namespace ETrikeV
 			//ライン復帰のためのライントレース
 			nowDistance = sys.getAverageMoveCM();
 			while (true) {
-			lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-			if (sys.getAverageMoveCM() > (nowDistance + 8)) { // 7
-			sys.stopMotors ();
-			break;
-			}
-			Thread.Sleep (5);
+				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				if (sys.getAverageMoveCM() > (nowDistance + 8)) { // 7
+					sys.stopMotors ();
+					break;
+				}
+				Thread.Sleep (5);
 			}
 			/*************************************************/
 

@@ -26,6 +26,7 @@ namespace ETrikeV
 					Thread.Sleep (1000);	//1秒
 					break;
 				}
+				Thread.Sleep (5);
 			}
 				
 			//前進
@@ -33,7 +34,7 @@ namespace ETrikeV
 
 			//ライン復帰する
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys, 3, true);
+			serchLine (sys, 2, true);
 			sys.setSteerSlope (0);
 
 			//ライントレースで前進（規定距離だけ）
@@ -58,6 +59,7 @@ namespace ETrikeV
 					Thread.Sleep (1000);	//1秒
 					break;
 				}
+				Thread.Sleep (5);
 			}
 
 			//前進
@@ -65,7 +67,7 @@ namespace ETrikeV
 
 			//ライン復帰する
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys, 5, false);
+			serchLine (sys, 2, false);
 			sys.setSteerSlope (0);
 
 			//ライントレースで前進（規定距離だけ）
