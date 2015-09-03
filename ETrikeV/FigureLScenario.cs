@@ -80,7 +80,7 @@ namespace ETrikeV
 			//段差を超えるために高いスピードで前進する
 			actionStraight(sys, 5, 40); 
 			Thread.Sleep(10);
-			actionStraight(sys, 8, 80); 	//10
+			actionStraight(sys, 9, 80); 	//10
 			/*************************************************/
 
 			//板上のラインに復帰する

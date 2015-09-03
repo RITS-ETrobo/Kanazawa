@@ -67,7 +67,7 @@ namespace ETrikeV
 
 			//ライン復帰する
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys, 3, false);
+			serchLine (sys, 4, false);
 			sys.setSteerSlope (0);
 
 			//ライントレースで前進（規定距離だけ）
