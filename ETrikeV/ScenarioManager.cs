@@ -36,7 +36,7 @@ namespace ETrikeV
 				scenarioList.Add (new CornerScenario (    7200,  25, 60, -30, Mode.Left));	// ヘアピン
 				scenarioList.Add (new LineTraceScenario ( 7500,  40, Mode.Left));			// ヘアピン後の角度補正
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
-				scenarioList.Add (new LineTraceScenario (10900,  55, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
 				scenarioList.Add (new StraightScenario  (13950,  40, Mode.Left));	//14000
