@@ -7,6 +7,8 @@ using MonoBrickFirmware.Movement;
 using MonoBrickFirmware.Sensors;
 using MonoBrickFirmware.Sound;
 
+using ETRobocon.EV3;
+
 namespace ETrikeV
 {
 	class Program
@@ -105,6 +107,25 @@ namespace ETrikeV
 
 			Lcd.Instance.Clear();
 			Lcd.Instance.Update();
+		}
+
+		/// <summary>
+		/// Bluetoothの設定変更用
+		/// OS書き込み後、1回使うだけで良い
+		/// </summary>
+		static void BluetoothSetting()
+		{
+
+			InfoDialog dialogSTART = new InfoDialog("Enter to Bluetooth Setting", true);
+			dialogSTART.Show();//Wait for enter to be pressed
+
+			// Bluetooth関係のETロボコン拡張機能を有効にする
+			Brick.InstallETRoboExt ();
+
+			InfoDialog dialogEnd = new InfoDialog("Fin", true);
+			dialogEnd.Show();//Wait for enter to be pressed
+
+			//Brick.ExitToMenu (); // MonoBrickメインメニューへ戻る
 		}
 	}
 }

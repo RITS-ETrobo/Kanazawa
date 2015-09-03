@@ -10,6 +10,10 @@ namespace ETrikeV
 		private int[] leftCount = new int[2];
 		private int[] rightCount = new int[2];
 		private uint motorStopCount = 0;
+		private double kp = 8.0;
+		private double ki = 0.0;
+		private double kd = 4.0;
+		private int[] diff = new int[2];
 
 		public abstract bool run (Ev3System robokon);
 
@@ -79,6 +83,35 @@ namespace ETrikeV
 					sys.setRightMotorPower (speed / 2);
 				}
 			}
+		}
+
+		/// <summary>
+		/// PID制御のライントレース
+		/// </summary>
+		/// <param name="sys">Sys.</param>
+		/// <param name="speed">Speed.</param>
+		/// <param name="edge">Edge.</param>
+		protected void lineTrace2(Ev3System sys, int speed, Mode edge)
+		{
+			int leftP, rightP;
+			int light = sys.colorRead ();
+			int pidVal = pid(sys, light);
+
+			if (edge == Mode.Right) {
+				pidVal *= -1;
+			}
+
+			leftP = speed;
+			rightP = speed;
+			if (pidVal < 0) {
+				leftP -= leftP * pidVal * -1 / 100;
+			} else if (pidVal > 0) {
+				rightP -= rightP * pidVal / 100;
+			}
+
+			steerCtrl (sys, leftP, rightP);
+			sys.setLeftMotorPower (leftP);
+			sys.setRightMotorPower (rightP);
 		}
 
 		/// <summary>
@@ -309,6 +342,49 @@ namespace ETrikeV
 
 			return false;
 		}
+
+		/// <summary>
+		/// PID制御（Iなし）
+		/// </summary>
+		/// <param name="sys">Sys.</param>
+		/// <param name="light">Light.</param>
+		private int pid(Ev3System sys, int light)
+		{
+			int ret = 0;
+			double p, d;
+
+			diff [1] = diff [0];
+			diff [0] = light - sys.TargetLight;
+
+			p = kp * diff [0];
+			d = kd * (diff [0] - diff [1]);
+
+			ret = (int)(p + d);
+			ret = (ret > 100) ? 100 : ret;
+			ret = (ret < -100) ? -100 : ret;
+
+			return ret;
+		}
+
+		/// <summary>
+		/// ステアリング制御
+		/// </summary>
+		/// <param name="sys">Sys.</param>
+		/// <param name="leftPwr">Left pwr.</param>
+		/// <param name="rightPwr">Right pwr.</param>
+		private void steerCtrl(Ev3System sys, int leftPwr, int rightPwr)
+		{
+			int target = SteerCtrl.getSteeringAngle (leftPwr, rightPwr);
+			target *= 8; // degree -> tacho
+			int current = sys.steerGetTachoCount ();
+			int diff = (target - current) * 2;
+			diff = (diff > 100) ? 100 : diff;
+			diff = (diff < -100) ? -100 : diff;
+			sys.setSteerPower (diff);
+
+			return;
+		}
+
 	}
 }
 
