@@ -14,7 +14,7 @@ namespace ETrikeV
 		{
 			int sonicDistance;
 			int sonicMaxRange = 250; //150
-			int sonicMinRage = 50;
+			int sonicMinRage = 30;
 			
 			//新幹線を検知するまで停止
 			sys.stopMotors ();
@@ -41,7 +41,7 @@ namespace ETrikeV
 			int nowDistance = (sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2;
 			while (true) {
 				lineTrace (sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 12)) { // 7
+				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 11)) { // 7
 					break;
 				}
 				Thread.Sleep (5);
@@ -67,14 +67,14 @@ namespace ETrikeV
 
 			//ライン復帰する
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys, 2, false);
+			serchLine (sys, 3, false);
 			sys.setSteerSlope (0);
 
 			//ライントレースで前進（規定距離だけ）
 			nowDistance = (sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2;
 			while (true) {
 				lineTrace (sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
-				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 10)) { // 7
+				if ((sys.leftMotorGetMoveCm () + sys.rightMotorGetMoveCm ()) / 2 > (nowDistance + 9)) { // 7
 					break;
 				}
 				Thread.Sleep (5);

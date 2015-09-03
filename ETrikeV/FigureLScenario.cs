@@ -99,7 +99,7 @@ namespace ETrikeV
 			while (true) {
 				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				//straightTrace (sys, 30, Mode.Left, LIGHT_WIDTH);
-				if (sys.getAverageMoveCM() > (nowDistance + 17)) { // 16
+				if (sys.getAverageMoveCM() > (nowDistance + 18)) { // 16
 					sys.stopMotors ();
 					Thread.Sleep(100);
 					break;
