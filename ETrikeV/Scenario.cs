@@ -15,6 +15,8 @@ namespace ETrikeV
 		private double kd = 4.0;
 		private int[] diff = new int[2];
 
+		private const int serchMaxCount = 5;
+
 		public abstract bool run (Ev3System robokon);
 
 		// 基本的な走行メソッドはここに定義する //
@@ -196,6 +198,7 @@ namespace ETrikeV
 			int leftPw = pw;
 			int rightPw = (pw * -1);
 			int slope = 90;
+			int serchCount = 0;
 
 			/***********************************************/
 			sys.setSteerSlope(slope); //60
@@ -207,9 +210,12 @@ namespace ETrikeV
 			while (true)
 			{
 				if (sys.colorRead () == (int)Color.Black) {
-					//後処理　分散しているのでまとめたい
-					sys.stopMotors ();
-					return true;;
+
+					//黒ラインの真ん中に移動したいので連続検知したら抜ける
+					if (++serchCount == serchMaxCount) {
+						sys.stopMotors ();
+						return true;
+					}
 				}
 
 				distance[1] = sys.leftMotorGetMoveCm ();
@@ -232,6 +238,7 @@ namespace ETrikeV
 			int leftPw = (pw * -1);
 			int rightPw = pw;
 			int slope = -90;
+			int serchCount = 0;
 
 			/***********************************************/
 			sys.setSteerSlope(slope); //70
@@ -243,9 +250,12 @@ namespace ETrikeV
 			while (true)
 			{
 				if (sys.colorRead () == (int)Color.Black) {
-					//後処理　分散しているのでまとめたい
-					sys.stopMotors ();
-					return true;
+
+					//黒ラインの真ん中に移動したいので連続検知したら抜ける
+					if (++serchCount == serchMaxCount) {
+						sys.stopMotors ();
+						return true;
+					}
 				}
 
 				distance [1] = sys.rightMotorGetMoveCm ();
