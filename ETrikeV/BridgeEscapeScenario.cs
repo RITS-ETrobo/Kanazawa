@@ -39,7 +39,7 @@ namespace ETrikeV
 				break;
 			case BridgeEscapeState.Turn2:
 				turnDir = (escapeDir == Mode.Left) ? Mode.Right : Mode.Left;
-				turn (sys, turnDir, -45);
+				turn (sys, turnDir, 0);
 				st = BridgeEscapeState.Straight2;
 				break;
 			case BridgeEscapeState.Straight2:
@@ -65,8 +65,7 @@ namespace ETrikeV
 				st = BridgeEscapeState.End;
 				break;
 			case BridgeEscapeState.End:
-				st = BridgeEscapeState.Turn1;
-				ret = false;
+				ret = true;
 				break;
 			default:
 				break;

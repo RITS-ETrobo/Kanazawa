@@ -13,21 +13,29 @@ namespace ETrikeV
 			scenarioList = new List<Scenario> ();
 			if (mode == Mode.Left) {
 				// Lコース
-				scenarioList.Add (new StraightScenario (  1550, 100, Mode.Right));	//
+				scenarioList.Add (new StraightScenario (  1550, 100, Mode.Right, true));
 				scenarioList.Add (new RightAngleParkScenario ());
-				scenarioList.Add (new LineTraceScenario ( 1800,  50, Mode.Right));
-				scenarioList.Add (new StraightScenario (  6900, 100, Mode.Right));	//6800
-				scenarioList.Add (new CornerScenario (    8400,  40, 100, 40, Mode.Right));
-				scenarioList.Add (new StraightScenario ( 11000,  80, Mode.Right));
-				#if true
+				scenarioList.Add (new LineTraceScenario ( 1800,  60, Mode.Right));
+				scenarioList.Add (new StraightScenario (  6900, 100, Mode.Right, true));	//6800
+				scenarioList.Add (new CornerScenario (    8250,  25, 60, 40, Mode.Right));
+				scenarioList.Add (new LineTraceScenario ( 8700,  50, Mode.Right));
+				scenarioList.Add (new StraightScenario ( 10500,  80, Mode.Right, true));
+				#if false
 				scenarioList.Add (new BridgeScenario ());
 				#else
 				scenarioList.Add(new BridgeEscapeScenario(Mode.Right, Mode.Right));
 				#endif
 				scenarioList.Add (new LineTraceScenario (15000, 80, Mode.Right));
+				#if false
 				scenarioList.Add (new UndeterminedAreaScenario ());
 				scenarioList.Add (new LineTraceScenario (26000, 80, Mode.Right));
 				//scenarioList.Add (new RightAngleParkScenario (  8700,  80, Mode.Right));
+				#else
+				scenarioList.Add (new BarcodeScenario());
+				scenarioList.Add (new ShortcutScenario());
+				scenarioList.Add (new LineTraceScenario (20000, 70, Mode.Left)); // Leftで間違っていません
+				scenarioList.Add (new StraightScenario ( 26000, 100, Mode.Left, true)); // Leftで間違っていません
+				#endif
 
 			} else {
 				// Rコース
