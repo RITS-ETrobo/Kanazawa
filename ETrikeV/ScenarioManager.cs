@@ -13,19 +13,21 @@ namespace ETrikeV
 			scenarioList = new List<Scenario> ();
 			if (mode == Mode.Left) {
 				// Lコース
-				scenarioList.Add (new StraightScenario (  1650, 100, Mode.Right, true));
+				scenarioList.Add (new StraightScenario (  1600,  80, Mode.Right, true));
 				scenarioList.Add (new RightAngleParkScenario ());
-				scenarioList.Add (new LineTraceScenario ( 1800,  60, Mode.Right));
-				scenarioList.Add (new StraightScenario (  6900, 100, Mode.Right, true));	//6800
-				scenarioList.Add (new CornerScenario (    8250,  25, 60, 40, Mode.Right));
+				scenarioList.Add (new LineTraceScenario ( 1900,  60, Mode.Right));
+				scenarioList.Add (new StraightScenario (  6700, 100, Mode.Right, true));	//6800
+				scenarioList.Add (new StraightScenario (  7000,  50, Mode.Right));
+				scenarioList.Add (new CornerScenario (    8300,  25, 50, 40, Mode.Right));
 				scenarioList.Add (new LineTraceScenario ( 8700,  60, Mode.Right));
-				scenarioList.Add (new StraightScenario ( 10750,  80, Mode.Right, true));
+				scenarioList.Add (new StraightScenario ( 10700,  80, Mode.Right, true));
 				#if true
 				scenarioList.Add (new BridgeScenario ());
 				#else
 				scenarioList.Add(new BridgeEscapeScenario(Mode.Right, Mode.Right));
 				#endif
-				scenarioList.Add (new LineTraceScenario (15000, 80, Mode.Right));
+				scenarioList.Add (new LineTraceScenario (12800, 80, Mode.Right));
+				scenarioList.Add (new StraightScenario ( 13200, 50, Mode.Right, false));
 				#if false
 				scenarioList.Add (new UndeterminedAreaScenario ());
 				scenarioList.Add (new LineTraceScenario (26000, 80, Mode.Right));

@@ -100,13 +100,15 @@ namespace ETrikeV
 			//直角駐車入庫
 			/*******************************************/
 			//右に-90度回転
-			actionRightTurnBack(sys, 20, 85, 23);	//70 20
+			actionRightTurnBack(sys, 20, 85, 21);	//70 20
+			Thread.Sleep(100);
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
 
 			//バックする
-			actionStraight (sys, -14, 50);
+			actionStraight (sys, -14, 40);
+			Thread.Sleep(100);
 			/*******************************************/
 
 			//3秒停止
@@ -114,10 +116,10 @@ namespace ETrikeV
 
 			//直角駐車出庫
 			/*******************************************/
-			actionStraight (sys, 16, 50);
-
-			actionRightTurn (sys, 10, 80, 12); //20
-
+			actionStraight (sys, 16, 40);
+			Thread.Sleep(100);
+			actionRightTurn (sys, 10, 80, 15); //20
+			Thread.Sleep(100);
 			serchLine (sys, 4, false, Mode.Right);
 			sys.setSteerSlope (0);
 

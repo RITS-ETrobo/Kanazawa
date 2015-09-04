@@ -190,22 +190,24 @@ namespace ETrikeV
 			actionStraight(sys, -5, 40);
 
 			//段差を超えるために高いスピードで前進する
-			actionStraight(sys, 22, 70);
+			actionStraight(sys, 22, 100);
 
-			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine(sys, 5, true, Mode.Right);
+			actionStraight (sys, 33, 50);
 
-			//ステアリングの傾きを正面に修正する
-			sys.setSteerSlope(0);
-
-			//白色を検知する
-			findStartPosition(sys);
-
-			//ステアリングの傾きを正面に修正する
-			sys.setSteerSlope(0);
-
-			//バーコード読み取り
-			redBarcode(sys);
+//			//板上のラインに復帰するために首を振ってライン探索する
+//			serchLine(sys, 5, true, Mode.Right);
+//
+//			//ステアリングの傾きを正面に修正する
+//			sys.setSteerSlope(0);
+//
+//			//白色を検知する
+//			findStartPosition(sys);
+//
+//			//ステアリングの傾きを正面に修正する
+//			sys.setSteerSlope(0);
+//
+//			//バーコード読み取り
+//			redBarcode(sys);
 
 			return true;
 

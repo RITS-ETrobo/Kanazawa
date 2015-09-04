@@ -16,9 +16,25 @@ namespace ETrikeV
 		public override bool run (Ev3System sys)
 		{
 			int currentTacho;
-			int startTacho = sys.rightMotorGetTachoCount ();
+			int startTacho;
+
+			// ライン復帰
+			serchLine(sys, 4, true, Mode.Left);
+			sys.setSteerSlope (0);
+
+			// ライントレース
+			startTacho = sys.rightMotorGetTachoCount ();
+			while (true) {
+				lineTrace (sys, 70, Mode.Left, 5, 180, 100);
+				currentTacho = sys.getAverageTachoCount ();
+				if (currentTacho >= startTacho + 100) {
+					sys.stopMotors ();
+					break;
+				}
+			}
 
 			// 左ターン
+			startTacho = sys.rightMotorGetTachoCount ();
 			sys.setSteerSlope (SteerCtrl.getSteeringAngle(0, 60));
 			sys.leftMotorBrake();
 			sys.setRightMotorPower (60);

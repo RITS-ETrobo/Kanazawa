@@ -33,7 +33,9 @@ namespace ETrikeV
 		/// <returns></returns>
 		public override bool run(Ev3System sys)
 		{
+			#if true
 			//段差を検知するまでライントレースする
+			sys.TargetLight -= 5;
 			while (true)
 			{
 				lineTrace(sys, 50, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
@@ -43,15 +45,16 @@ namespace ETrikeV
 				}
 				Thread.Sleep(5);
 			}
+			sys.TargetLight += 5;
 
 			//ステアリングの傾きを直す
 			actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
 
 			//段差を超えるための助走のための後退
-			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 5, false);
+			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 3, false);
 
 			//ステアリングの傾きを直す
-			actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
+			//actionSlopeChange(sys.leftMotor, sys.rightMotor, sys.steerMotor, 0);
 
 			//前進して段差を超える
 			actionAdvance(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 40, false);
@@ -61,20 +64,57 @@ namespace ETrikeV
 
 			//段差を超えた後に復帰しやすくするため
 			Thread.Sleep(8);
-			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 100, 10, false);
+			actionBackward(sys.leftMotor, sys.rightMotor, sys.steerMotor, 50, 8, false);
+
+			// ライン探索
+			serchLine(sys, 6, true, Mode.Right);
+			sys.setSteerSlope(0);
 
 			//ライン復帰のためのライントレース
 			int nowDistance = sys.getAverageMoveCM();
 
 			while (true)
 			{
-				lineTrace(sys, 30, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
+				lineTrace(sys, 50, Mode.Right, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				if (sys.getAverageMoveCM() > (nowDistance + 8))
 				{
 					break;
 				}
 				Thread.Sleep(5);
 			}
+			#else
+
+			sys.stopMotors ();
+			sys.setSteerSlope (90);
+			int curTacho = 0;
+			int startTacho = sys.leftMotorGetTachoCount ();
+			sys.setLeftMotorPower (60);
+			sys.setRightMotorPower (-60);
+			while (true) {
+				curTacho = sys.leftMotorGetTachoCount ();
+				if (curTacho >= startTacho + 260) {
+					sys.stopMotors ();
+					break;
+				}
+			}
+			serchLine (sys, 3, true, Mode.Left);
+			sys.setSteerSlope (0);
+
+			// ライントレースで補正
+			curTacho = 0;
+			startTacho = sys.getAverageTachoCount();
+			while (true) {
+				curTacho = sys.getAverageTachoCount();
+				if (curTacho >= startTacho + 100) {
+					sys.stopMotors();
+					break;
+				}
+				lineTrace(sys, 60, Mode.Left, 5, 180, 100);
+			}
+			sys.setSteerSlope(0);
+			actionStraight(sys, -50, 100);
+
+			#endif
 
 			return true;
 		}
