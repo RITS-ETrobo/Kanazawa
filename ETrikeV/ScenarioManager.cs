@@ -38,15 +38,16 @@ namespace ETrikeV
 				scenarioList.Add (new LineTraceScenario ( 7500,  50, Mode.Left));			// ヘアピン後の角度補正
 				scenarioList.Add (new StraightScenario   (7700,  50, Mode.Left));
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
-				scenarioList.Add (new LineTraceScenario (10900,  65, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (11100,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
 				scenarioList.Add (new StraightScenario  (13950,  40, Mode.Left));	//14000
 				scenarioList.Add (new FigureLScenario  ());
 				scenarioList.Add (new ShinkansenScenario ());
-				scenarioList.Add (new LineTraceScenario (18000,  70, Mode.Left));
-				scenarioList.Add (new LineTraceScenario (22000,  80, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (18500,  70, Mode.Left));
+				scenarioList.Add (new StraightScenario(  19900,  60, Mode.Left));
+				scenarioList.Add (new LineTraceScenario (21500,  80, Mode.Left));
 				scenarioList.Add (new StraightScenario(  22500,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario(  23000,  75, Mode.Left));
 				scenarioList.Add (new StraightScenario(  23500,  90, Mode.Left));
