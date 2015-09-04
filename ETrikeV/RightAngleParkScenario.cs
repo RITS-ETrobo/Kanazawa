@@ -100,7 +100,7 @@ namespace ETrikeV
 			//直角駐車入庫
 			/*******************************************/
 			//右に-90度回転
-			actionRightTurnBack(sys, 20, 85, 18);	//70 20
+			actionRightTurnBack(sys, 20, 85, 20);	//70 20
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
