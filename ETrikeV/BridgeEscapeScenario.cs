@@ -134,7 +134,7 @@ namespace ETrikeV
 		private void line(Ev3System sys)
 		{
 			// ラインを探す
-			serchLine (sys, 3, false);
+			serchLine (sys, 3, false, Mode.Right);
 
 			int cur = 0;
 			int cm = sys.getAverageMoveCM ();

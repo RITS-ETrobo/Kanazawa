@@ -86,7 +86,7 @@ namespace ETrikeV
 			//板上のラインに復帰する
 			/*************************************************/
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine (sys, 2, true);
+			serchLine (sys, 2, true, Mode.Left);
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
@@ -130,7 +130,7 @@ namespace ETrikeV
 			//ライン上に復帰する
 			/*************************************************/
 			//板から下りてラインを探す
-			serchLine (sys, 2, false); //5
+			serchLine (sys, 2, false, Mode.Left); //5
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);

@@ -192,13 +192,13 @@ namespace ETrikeV
 			sys.stopMotors ();
 		}
 
-		private bool serchRight(Ev3System sys, int pw, int range)
+		private bool serchRight(Ev3System sys, int pw, int range, Mode edge)
 		{
 			int[] distance = new int[2];
 			int leftPw = pw;
 			int rightPw = (pw * -1);
 			int slope = 90;
-			int serchCount = 0;
+			bool blackFound = false;
 
 			/***********************************************/
 			sys.setSteerSlope(slope); //60
@@ -210,12 +210,15 @@ namespace ETrikeV
 			while (true)
 			{
 				if (sys.colorRead () == (int)Color.Black) {
-
-					//黒ラインの真ん中に移動したいので連続検知したら抜ける
-					if (++serchCount == serchMaxCount) {
+					if (edge == Mode.Right) {
+						blackFound = true;
+					} else {
 						sys.stopMotors ();
 						return true;
 					}
+				} else if (blackFound && sys.colorRead () == (int)Color.White) {
+					sys.stopMotors ();
+					return true;
 				}
 
 				distance[1] = sys.leftMotorGetMoveCm ();
@@ -232,13 +235,13 @@ namespace ETrikeV
 			return false;
 		}
 
-		private bool serchLeft(Ev3System sys, int pw, int range)
+		private bool serchLeft(Ev3System sys, int pw, int range, Mode edge)
 		{
 			int[] distance = new int[2];
 			int leftPw = (pw * -1);
 			int rightPw = pw;
 			int slope = -90;
-			int serchCount = 0;
+			bool blackFound = false;
 
 			/***********************************************/
 			sys.setSteerSlope(slope); //70
@@ -250,12 +253,15 @@ namespace ETrikeV
 			while (true)
 			{
 				if (sys.colorRead () == (int)Color.Black) {
-
-					//黒ラインの真ん中に移動したいので連続検知したら抜ける
-					if (++serchCount == serchMaxCount) {
+					if (edge == Mode.Left) {
+						blackFound = true;
+					} else {
 						sys.stopMotors ();
 						return true;
 					}
+				} else if (blackFound && sys.colorRead () == (int)Color.White) {
+					sys.stopMotors ();
+					return true;
 				}
 
 				distance [1] = sys.rightMotorGetMoveCm ();
@@ -277,7 +283,7 @@ namespace ETrikeV
 		/// </summary>
 		/// <param name="sys">Sys.</param>
 		/// <param name="range">Range.</param>
-		protected  void serchLine(Ev3System sys, int range, bool isStartRight)
+		protected  void serchLine(Ev3System sys, int range, bool isStartRight, Mode edge)
 		{
 			int pw = 20; //30
 
@@ -294,17 +300,17 @@ namespace ETrikeV
 			}
 				
 			if (isStartRight == true) {
-				if (serchRight(sys, pw, range) != true) {
+				if (serchRight(sys, pw, range, edge) != true) {
 
-					serchLeft(sys, pw, range * 2);
+					serchLeft(sys, pw, range * 2, edge);
 
 				} else {
 					//処理不要
 				}
 			} else {
-				if (serchLeft(sys, pw, range) != true) {
+				if (serchLeft(sys, pw, range, edge) != true) {
 
-					serchRight(sys, pw, range * 2);
+					serchRight(sys, pw, range * 2, edge);
 
 				} else {
 					//処理不要

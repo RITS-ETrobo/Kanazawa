@@ -193,7 +193,7 @@ namespace ETrikeV
 			actionStraight(sys, 22, 70);
 
 			//板上のラインに復帰するために首を振ってライン探索する
-			serchLine(sys, 5, true);
+			serchLine(sys, 5, true, Mode.Right);
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope(0);
