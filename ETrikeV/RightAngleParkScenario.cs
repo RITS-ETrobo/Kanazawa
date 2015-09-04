@@ -96,35 +96,32 @@ namespace ETrikeV
 
 		public override bool run(Ev3System sys)
 		{
-			// 終了確認
-			//if (sys.getAverageTachoCount() > endTachoCount) {
-			//	return true;
-			//}
 
-			//スタート後に直進
-			//actionStraight (sys, 100, 90);
-
+			//直角駐車入庫
+			/*******************************************/
 			//右に-90度回転
-			actionRightTurnBack(sys, 10, 80, 20);	//70 20
+			actionRightTurnBack(sys, 20, 85, 18);	//70 20
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
 
 			//バックする
-			actionStraight (sys, -13, 50);
+			actionStraight (sys, -15, 50);
+			/*******************************************/
 
-			//3秒停止(念のため4秒)
-			//Thread.Sleep(4000);
+			//3秒停止
+			Thread.Sleep(3000);
 
-			//コース復帰
-			//actionStraight (sys, 20, 100);
-			//actionRightTurn(sys, 0, 50, 50);
+			//直角駐車出庫
+			/*******************************************/
+			actionStraight (sys, 15, 50);
 
-			//右に旋回
-			//actionRightTurn(sys, -50, 50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
+			actionRightTurn (sys, 10, 80, 12); //20
 
-			//ステアリングの傾きを正面に修正する
+			serchLine (sys, 4, false, Mode.Right);
 			sys.setSteerSlope (0);
+
+			/*******************************************/
 
 			return true;
 		}
