@@ -138,7 +138,7 @@ namespace ETrikeV
 				}
 			} else {
 				if (light > sys.TargetLight + margin) {
-					leftMotorPower /= 2;
+					leftMotorPower /= 3;
 				} else if (light < sys.TargetLight - margin) {
 					rightMotorPower /= 2;
 				}
