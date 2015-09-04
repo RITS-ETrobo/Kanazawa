@@ -80,7 +80,7 @@ namespace ETrikeV
 			//段差を超えるために高いスピードで前進する
 			actionStraight(sys, 5, 40); 
 			Thread.Sleep(10);
-			actionStraight(sys, 9, 80); 	//10
+			actionStraight(sys, 10, 80); 	//10
 			/*************************************************/
 
 			//板上のラインに復帰する
@@ -99,7 +99,7 @@ namespace ETrikeV
 			while (true) {
 				lineTrace(sys, 50, Mode.Left, LIGHT_WIDTH, MAX_STEERING_ANGLE, STEER_POWER);
 				//straightTrace (sys, 30, Mode.Left, LIGHT_WIDTH);
-				if (sys.getAverageMoveCM() > (nowDistance + 18)) { // 16
+				if (sys.getAverageMoveCM() > (nowDistance + 17)) { // 16
 					sys.stopMotors ();
 					Thread.Sleep(100);
 					break;
@@ -112,7 +112,7 @@ namespace ETrikeV
 			/*************************************************/
 			//actionRightTurn(sys, 10, 50, 30, 12);	//11
 			//actionRightTurn(sys, 15, 50, 30, 17);	//これはかなり良い
-			actionRightTurn(sys, 16, 50, 19);	//
+			actionRightTurn(sys, 16, 50, 18);	//
 			Thread.Sleep(100);
 
 			/*************************************************/
@@ -130,7 +130,7 @@ namespace ETrikeV
 			//ライン上に復帰する
 			/*************************************************/
 			//板から下りてラインを探す
-			serchLine (sys, 2, true); //5
+			serchLine (sys, 2, false); //5
 
 			//ステアリングの傾きを正面に修正する
 			sys.setSteerSlope (0);
