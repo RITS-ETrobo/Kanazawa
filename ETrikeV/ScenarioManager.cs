@@ -30,13 +30,16 @@ namespace ETrikeV
 			} else {
 				// Rコース
 				#if true
-				scenarioList.Add (new StraightScenario(    500,  50, Mode.Left));			// 最初の直線1
-				scenarioList.Add (new StraightScenario(   5800, 100, Mode.Left));			// 最初の直線2
-				scenarioList.Add (new StraightScenario(   6100,  50 ,Mode.Left));			// 最初の直線3
+				scenarioList.Add (new StraightScenario(    400,  50, Mode.Left));			// 最初の直線1
+				scenarioList.Add (new StraightScenario(    700,  70, Mode.Left));			// 最初の直線2
+				scenarioList.Add (new StraightScenario(   5800, 100, Mode.Left));			// 最初の直線3
+				scenarioList.Add (new StraightScenario(   6100,  50, Mode.Left));			// 最初の直線4
 				scenarioList.Add (new CornerScenario (    7200,  25, 60, -30, Mode.Left));	// ヘアピン
-				scenarioList.Add (new LineTraceScenario ( 7500,  40, Mode.Left));			// ヘアピン後の角度補正
+				scenarioList.Add (new LineTraceScenario ( 7500,  50, Mode.Left));			// ヘアピン後の角度補正
+				scenarioList.Add (new StraightScenario   (7700,  50, Mode.Left));
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (10900,  65, Mode.Left));
+				scenarioList.Add (new StraightScenario  (11100,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
 				scenarioList.Add (new StraightScenario  (13950,  40, Mode.Left));	//14000
@@ -44,7 +47,10 @@ namespace ETrikeV
 				scenarioList.Add (new ShinkansenScenario ());
 				scenarioList.Add (new LineTraceScenario (18000,  70, Mode.Left));
 				scenarioList.Add (new LineTraceScenario (22000,  80, Mode.Left));
-				scenarioList.Add (new StraightScenario(  26000,  90, Mode.Left));
+				scenarioList.Add (new StraightScenario(  22500,  60, Mode.Left));
+				scenarioList.Add (new StraightScenario(  23000,  75, Mode.Left));
+				scenarioList.Add (new StraightScenario(  23500,  90, Mode.Left));
+				scenarioList.Add (new StraightScenario(  26000, 100, Mode.Left));
 				#else
 				scenarioList.Add(new TestScenario());
 				#endif
