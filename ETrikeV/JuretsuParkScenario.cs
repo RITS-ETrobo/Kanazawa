@@ -9,64 +9,49 @@ namespace ETrikeV
 	public class JuretsuParkScenario : Scenario
 	{
 		private const int LIGHT_WIDTH = 10;
-		private int endTachoCount;
-		//private int speed;
-		//private Mode edge;
 
-		public JuretsuParkScenario (int endTachoCount, int speed, Mode edge)
+		public JuretsuParkScenario ()
 		{
-			this.endTachoCount = endTachoCount;
-			//this.speed = speed;
-			//this.edge = edge;
 		}
 
-		private void actionRightTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
+		private int getAbsParam(int param)
+		{
+			if (param < 0) {
+				return param * -1;
+			} else {
+				return param;
+			}
+		}
+
+		private void actionRightTurnBack(Ev3System sys, sbyte rightPw, sbyte leftPw, int distance)
 		{
 			int[] tmpDistance = new int[2];
+			int slope = SteerCtrl.getSteeringAngle (getAbsParam(leftPw), getAbsParam(rightPw));;
 
 			sys.stopMotors ();
 
-			sys.setSteerSlope (slop);
+			sys.setSteerSlope (slope);
 
 			tmpDistance[0] = sys.leftMotorGetMoveCm();
-			sys.setRightMotorPower(rightPw);
-			sys.setLeftMotorPower(leftPw);
 
-			while (true)
-			{
-				tmpDistance[1] = sys.leftMotorGetMoveCm();
-				if (tmpDistance[1] > (tmpDistance[0] + distance))
-				{
-					break;
-				}
-				//8ミリ秒待ち
-				Thread.Sleep(8);
+			if (rightPw == 0) {
+				sys.rightMotorBrake ();
+			} else {
+				sys.setRightMotorPower(rightPw * -1);
+			}
+			if (leftPw == 0) {
+				sys.leftMotorBrake ();
+			} else {
+				sys.setLeftMotorPower (leftPw * -1);
 			}
 
-			sys.stopMotors ();
-		}
-
-		private void actionLeftTurn(Ev3System sys, sbyte rightPw, sbyte leftPw, int slop, uint distance)
-		{
-			int[] tmpDistance = new int[2];
-
-			sys.stopMotors ();
-
-			sys.setSteerSlope (slop);
-
-			tmpDistance[0] = sys.rightMotorGetMoveCm();
-			sys.setRightMotorPower(rightPw);
-			sys.setLeftMotorPower(leftPw);
-
-			while (true)
-			{
-				tmpDistance[1] = sys.rightMotorGetMoveCm();
-				if (tmpDistance[1] > (tmpDistance[0] + distance))
-				{
+			while (true) {
+				tmpDistance [1] = sys.leftMotorGetMoveCm ();
+				if (tmpDistance [1] < (tmpDistance [0] - distance)) {
 					break;
 				}
 				//8ミリ秒待ち
-				Thread.Sleep(8);
+				Thread.Sleep (5);
 			}
 
 			sys.stopMotors ();
@@ -74,42 +59,21 @@ namespace ETrikeV
 
 		public override bool run(Ev3System sys)
 		{
-			// 終了確認
-			if (sys.getAverageTachoCount() > endTachoCount) {
-				return true;
+			int cur, sta;
+			sta = sys.leftMotorGetMoveCm ();
+
+			sys.setSteerSlope (80);
+			sys.rightMotorBrake ();
+			sys.setLeftMotorPower (-70);
+			while (true) {
+				cur = sys.leftMotorGetMoveCm ();
+				if (cur <= sta - 40) {
+					sys.stopMotors ();
+					break;
+				}
 			}
 
-			//スタート後に直進
-			actionStraight (sys, 20, 100);
-
-			//右に90度回転
-			actionRightTurn(sys, -80, -50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
-
-			//ステアリングの傾きを正面に修正する
-			sys.setSteerSlope (0);
-
-			//バックする
-			actionStraight (sys, -10, 100);
-
-			//左に旋回
-			actionLeftTurn(sys, 50, 0, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
-
-			//3秒停止(念のため4秒)
-			Thread.Sleep(4000);
-
-			//右に旋回
-			actionRightTurn(sys, 0, 50, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
-
-			//コース復帰
-			actionStraight (sys, 20, 100);
-
-			//左に旋回
-			actionLeftTurn(sys, 50, 0, 35, 11);		//30度より高い角度だと進みすぎて精密な制御ができない
-
-			//ステアリングの傾きを正面に修正する
-			sys.setSteerSlope (0);
-
-			return false;
+			return true;
 		}
 	}
 }

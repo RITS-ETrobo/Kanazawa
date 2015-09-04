@@ -56,17 +56,11 @@ namespace ETrikeV
 				scenarioList.Add (new LineTraceScenario (18500,  70, Mode.Left));
 				scenarioList.Add (new StraightScenario(  19900,  60, Mode.Left, true));
 				scenarioList.Add (new LineTraceScenario (21500,  80, Mode.Left));
-				scenarioList.Add (new StraightScenario(  26000, 100, Mode.Left, true));
+				scenarioList.Add (new StraightScenario(  26100, 100, Mode.Left, true));
+				scenarioList.Add (new JuretsuParkScenario());
 				#else
 				scenarioList.Add(new TestScenario());
 				#endif
-//				this.scenarioList.Add (new Scenario (Mode.Straight,  6100, 100,    0));
-//				this.scenarioList.Add (new Scenario (Mode.Corner,    7350,   0, -200));
-//				this.scenarioList.Add (new Scenario (Mode.Straight,  8700,  80,    0));
-//				this.scenarioList.Add (new Scenario (Mode.Line,     10900,   0,    0));
-//				this.scenarioList.Add (new Scenario (Mode.Straight, 12700,  80,    0));
-//				this.scenarioList.Add (new Scenario (Mode.Line,     13700,   0,    0));
-//				this.scenarioList.Add (new Scenario (Mode.Straight, 14000,  50,    0));
 			}
 		}
 
