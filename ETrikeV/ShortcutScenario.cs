@@ -48,7 +48,7 @@ namespace ETrikeV
 			sys.setSteerSlope (0);
 
 			// 直進
-			actionStraight(sys, 68, 80);
+			actionStraight(sys, 68, 100);
 			Thread.Sleep (1000);
 
 			// ラインまで直進
