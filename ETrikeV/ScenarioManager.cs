@@ -26,7 +26,7 @@ namespace ETrikeV
 				#else
 				scenarioList.Add(new BridgeEscapeScenario(Mode.Right, Mode.Right));
 				#endif
-				scenarioList.Add (new LineTraceScenario (12800, 80, Mode.Right));
+				scenarioList.Add (new LineTraceScenario (13000, 80, Mode.Right));
 				scenarioList.Add (new StraightScenario ( 13200, 50, Mode.Right, false));
 				#if false
 				scenarioList.Add (new UndeterminedAreaScenario ());

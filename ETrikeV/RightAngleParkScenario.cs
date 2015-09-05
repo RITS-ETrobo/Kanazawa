@@ -107,7 +107,7 @@ namespace ETrikeV
 			sys.setSteerSlope (0);
 
 			//バックする
-			actionStraight (sys, -14, 40);
+			actionStraight (sys, -15, 40);
 			Thread.Sleep(100);
 			/*******************************************/
 
@@ -116,9 +116,9 @@ namespace ETrikeV
 
 			//直角駐車出庫
 			/*******************************************/
-			actionStraight (sys, 16, 40);
+			actionStraight (sys, 17, 40);
 			Thread.Sleep(100);
-			actionRightTurn (sys, 10, 80, 15); //20
+			actionRightTurn (sys, 10, 80, 17); //20
 			Thread.Sleep(100);
 			serchLine (sys, 4, false, Mode.Right);
 			sys.setSteerSlope (0);
