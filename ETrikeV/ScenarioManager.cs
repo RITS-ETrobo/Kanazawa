@@ -49,14 +49,14 @@ namespace ETrikeV
 				scenarioList.Add (new StraightScenario   (8700,  80, Mode.Left, true));
 				scenarioList.Add (new LineTraceScenario (10900,  60, Mode.Left));
 				scenarioList.Add (new StraightScenario  (12660,  80, Mode.Left, true));
-				scenarioList.Add (new LineTraceScenario (13800,  70, Mode.Left));	//13700
+				scenarioList.Add (new LineTraceScenario (13900,  70, Mode.Left));	//13700
 				scenarioList.Add (new StraightScenario  (13950,  40, Mode.Left));	//14000
 				scenarioList.Add (new FigureLScenario  ());
 				scenarioList.Add (new ShinkansenScenario ());
 				scenarioList.Add (new LineTraceScenario (18500,  70, Mode.Left));
 				scenarioList.Add (new StraightScenario(  19900,  60, Mode.Left, true));
 				scenarioList.Add (new LineTraceScenario (21500,  80, Mode.Left));
-				scenarioList.Add (new StraightScenario(  26100, 100, Mode.Left, true));
+				scenarioList.Add (new StraightScenario(  26525, 100, Mode.Left, true));
 				scenarioList.Add (new JuretsuParkScenario());
 				#else
 				scenarioList.Add(new TestScenario());
